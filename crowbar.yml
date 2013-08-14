@@ -1,0 +1,70 @@
+# Copyright 2013, Cloudbase Solutions
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+barclamp:
+  name: hyperv
+  display: Hyper-V
+  description: Install Openstack Nova Compute on Windows Server 2012
+  proposal_schema_version: 1
+  # controlls if barclamp is shown in UI list (true=yes)
+  user_managed: true
+  version: 0
+  # Requires allows you to declare that this barclamp relies on
+  # another barclamp to provide some of its functionality.
+  # All barclamps implicitly rely on the crowbar barclamp.
+  requires:
+    - '@crowbar'
+    - database
+    - rabbitmq
+    - glance
+    - keystone
+    - cinder
+    - quantum
+
+#    - another-barclamp # rely on a single other barclamp
+#    - @barclamp-group  # rely on another group of barclamps.
+  # Member allows you to declare that this barclamp is a member
+  # of a group of related barclamp.  A barclamp can be a member of 
+  # muliple groups, and a group name can be used instead of a barclamp
+  # in a requires: clause by prefixing it with an @ sign. 
+  member:
+#    - barclamp-group
+#    - another-barclamp-group
+  # Os_support allows you to declare that this barclamp only supports
+  # specific operating systems.  If you don't have an os_support
+  # section, Crowbar will assume the barclamp works on all the operating
+  # systems it supports.  
+  os_support:
+    - windows-6.2
+
+crowbar:
+  layout: 1
+  order: 1000
+  run_order: 1000
+  chef_order: 1000
+  proposal_schema_version: 2
+
+nav:
+  barclamps:
+    hyperv: barclamp_modules_path(:id=>'hyperv')
+
+locale_additions:
+  en:
+    nav:
+      hyperv: Hyper-V
+    barclamp:
+      hyperv_edit_attributes: 
+        attributes: Attributes
+      hyperv_edit_deployment: 
+        deployment: Deployment

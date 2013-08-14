@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry excluding="attributes/|resources/|files/|libraries/|providers/|recipes/|files/default/|files/default/handlers/" kind="src" path=""/>
+	<buildpathentry kind="src" path="attributes"/>
+	<buildpathentry kind="src" path="resources"/>
+	<buildpathentry excluding="default/|default/handlers/" kind="src" path="files"/>
+	<buildpathentry kind="src" path="libraries"/>
+	<buildpathentry kind="src" path="providers"/>
+	<buildpathentry kind="src" path="recipes"/>
+	<buildpathentry excluding="handlers/" kind="src" path="files/default"/>
+	<buildpathentry kind="src" path="files/default/handlers"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.launching.INTERPRETER_CONTAINER"/>
+</buildpath>

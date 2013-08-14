@@ -1,0 +1,61 @@
+{
+  "id": "bc-template-hyperv",
+  "description": "Installation for Hyperv",
+  "attributes": {
+    "hyperv": {
+      "rabbitmq_instance": "none",
+      "keystone_instance": "none",
+      "service_user": "nova",
+      "glance_instance": "none",
+      "cinder_instance": "none",
+      "quantum_instance": "none",
+      "verbose": true,
+      "user": "nova",
+      "gitrepo": "http://github.com/openstack/nova.git",
+      "git_instance": "",
+      "git_refspec": "stable/grizzly",
+      "use_gitrepo": false,
+      "use_gitbarclamp": false,
+      "use_pip_cache": false,
+      "networking_backend": "quantum",
+      "network": {
+        "ha_enabled": false,
+        "tenant_vlans": false,
+        "dhcp_enabled": true,
+        "allow_same_net_traffic": false,
+        "num_networks": 1,
+        "network_size": 256
+      },
+      "scheduler": {
+        "ram_allocation_ratio": 1.0,
+        "cpu_allocation_ratio": 16.0
+      },
+      "db": {
+        "database_instance": "none",
+        "password": "",
+        "user": "nova",
+        "database": "nova"
+      }
+    }
+  },
+  "deployment": {
+    "hyperv": {
+      "crowbar-revision": 0,
+      "element_states": {
+        "hyperv-server": [ "readying", "ready", "applying" ]
+      },
+      "elements": {},
+      "element_order": [
+        [ "hyperv-server" ]
+      ],
+      "config": {
+        "environment": "hyperv-base-config",
+        "mode": "full",
+        "transitions": false,
+        "transition_list": [
+        ]
+      }
+    }
+  }
+}
+

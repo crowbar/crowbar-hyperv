@@ -1,0 +1,10 @@
+[DEFAULT]
+# Show more verbose log output (sets INFO log level output)
+verbose = <%= node[:hyperv][:verbose] %>
+
+# Show debugging output in logs (sets DEBUG log level output)
+debug = <%= node[:hyperv][:debug] %>
+
+[app:hyperv-api]
+paste.app_factory = hyperv.server:app_factory
+
