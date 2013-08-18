@@ -11,6 +11,6 @@ powershell "configure_networking" do
     Rename-NetAdapter -Name $netcard.Name -NewName "VSwitchNetCard$i"
     $i++
   }
-  New-VMSwitch -NetAdapterName "VSwitchNetCard0" -Name "VSwitch" -AllowManagementOS $true
+  New-VMSwitch -NetAdapterName "VSwitchNetCard0" -Name "vswitch" -AllowManagementOS $true
   EOH
 end

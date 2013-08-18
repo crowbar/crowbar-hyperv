@@ -1,8 +1,8 @@
 raise if not node[:platform] == 'windows'
 
-#download Greenlet Exec from URL
-remote_file node[:greenlet][:location] do
-  source node[:greenlet][:url]
+#Fetch and install Greenlet Exec
+cookbook_file "#{node[:cache_location]}#{node[:greenlet][:file]}" do
+  source node[:greenlet][:file]
   not_if {::File.exists?(node[:greenlet][:installed])}
 end
 

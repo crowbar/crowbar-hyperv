@@ -55,6 +55,7 @@ default[:greenlet][:target] = "#{node[:python][:sitepackages]}"
 default[:greenlet][:installed] = "#{node[:greenlet][:target]}\\greenlet.pyd"
 
 default[:m2crypto][:url] = "http://chandlerproject.org/pub/Projects/MeTooCrypto/M2Crypto-0.21.1.win32-py2.7.msi"
+default[:m2crypto][:file] = "M2Crypto-0.21.1.win32-py2.7.msi"
 
 default[:easyinstall][:command] = 'C:\Python27\Scripts\easy_install.exe'
 
@@ -116,41 +117,22 @@ default[:hyperv][:scheduler][:cpu_allocation_ratio] = 16.0
 #
 
 default[:hyperv][:networking_backend] = "quantum"
-default[:hyperv][:network][:ha_enabled] = true
 default[:hyperv][:network][:dhcp_enabled] = true
 default[:hyperv][:network][:tenant_vlans] = true
 default[:hyperv][:network][:allow_same_net_traffic] = true
-default[:hyperv][:public_interface] = "eth0"
-default[:hyperv][:routing_source_ip] = ipaddress
 default[:hyperv][:fixed_range] = "10.0.0.0/8"
 default[:hyperv][:floating_range] = "4.4.4.0/24"
 default[:hyperv][:num_networks] = 1
 default[:hyperv][:network_size] = 256
-#
-default[:hyperv][:network][:flat_network_bridge] = "br100"
-default[:hyperv][:network][:flat_injected] = true
-default[:hyperv][:network][:flat_dns] = "8.8.4.4"
-default[:hyperv][:network][:flat_interface] = "eth0"
-default[:hyperv][:network][:flat_network_dhcp_start] = "10.0.0.2"
-default[:hyperv][:network][:vlan_interface] = "eth1"
-default[:hyperv][:network][:vlan_start] = 100
 
 default[:hyperv][:service_user] = "nova"
 default[:hyperv][:service_password] = "nova"
 
-default[:hyperv][:ssl][:enabled] = false
-default[:hyperv][:ssl][:insecure] = false
-default[:hyperv][:ssl][:certfile] = "/etc/nova/ssl/certs/signing_cert.pem"
-default[:hyperv][:ssl][:keyfile] = "/etc/nova/ssl/private/signing_key.pem"
-default[:hyperv][:ssl][:cert_required] = false
-default[:hyperv][:ssl][:ca_certs] = "/etc/nova/ssl/certs/ca.pem"
-
-#default[:hyperv][:novnc][:ssl][:enabled] = false
-#default[:hyperv][:novnc][:ssl][:certfile] = ""
-#default[:hyperv][:novnc][:ssl][:keyfile] = ""
-
 #
-# Transparent Hugepage Settings
-# 
-#default[:hyperv][:hugepage][:tranparent_hugepage_enabled] = "always"
-#default[:hyperv][:hugepage][:tranparent_hugepage_defrag] = "always"
+# Files location settings
+#
+
+default[:location][:config] = "C:\OpenStack\etc"
+default[:location][:logs] = "C:\OpenStack\Logs"
+default[:location][:exec] = "C:\OpenStack\bin"
+default[:location][:instances] = "C:\OpenStack\Instances"
