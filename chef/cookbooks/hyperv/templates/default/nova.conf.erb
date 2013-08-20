@@ -1,0 +1,43 @@
+NOVA.CONF
+
+
+
+[DEFAULT]
+auth_strategy=keystone
+image_service=nova.image.glance.GlanceImageService
+compute_driver=nova.virt.hyperv.driver.HyperVDriver
+volume_api_class=nova.volume.cinder.API
+fake_network=true
+instances_path=C:\OpenStack\Instances
+glance_api_servers=<%= @glance_server_host%>:<%= @glance_server_port%>
+use_cow_images=true
+force_config_drive=false
+injected_network_template=C:\OpenStack\etc\interfaces.template
+policy_file=C:\OpenStack\etc\policy.json
+mkisofs_cmd=C:\OpenStack\bin\mkisofs.exe
+verbose=true
+allow_resize_to_same_host=true
+running_deleted_instance_action=reap
+running_deleted_instance_poll_interval=120
+resize_confirm_window=5
+resume_guests_state_on_host_boot=true
+rpc_backend=nova.openstack.common.rpc.impl_kombu
+rabbit_host=<%= @rabbit_settings[:address] %>
+rabbit_port=<%= @rabbit_settings[:port] %>
+rabbit_userid=<%= @rabbit_settings[:user] %>
+rabbit_password=<%= @rabbit_settings[:password] %>
+logdir=C:\OpenStack\Log\
+logfile=nova-compute.log
+network_api_class=nova.network.quantumv2.api.API
+quantum_url=<%= @quantum_protocol>://<%= @quantum_server_host>:<%= @quantum_server_port>
+quantum_auth_strategy=keystone
+quantum_admin_tenant_name=<%= @keystone_service_tenant>
+quantum_admin_username=<%= @quantum_service_user>
+quantum_admin_password=<%= @quantum_service_password>
+quantum_admin_auth_url=<%= @keystone_protocol>://<%= @keystone_host>:<%= keystone_admin_port>/v2.0
+[hyperv]
+vswitch_name=vswitch
+limit_cpu_features=false
+config_drive_inject_password=false
+qemu_img_cmd=C:\OpenStack\Nova\bin\qemu-img.exe
+
