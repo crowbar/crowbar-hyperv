@@ -2,7 +2,7 @@
 % Tags:       hyperv
 % Author:     Unknown
 % License:    Apache 2
-% Copyright:  Copyright 2012, Dell 
+% Copyright:  Copyright 2013, SUSE LLC
 % Date:       Unknown
 % Order:      100
 % AppURL:     /crowbar/modules/1.0?id=hyperv

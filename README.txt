@@ -1,6 +1,6 @@
 Welcome to a Barclamp for the Crowbar Framework project
 =======================================================
-_Copyright 2013, Cloudbase Solutions_
+_Copyright 2013, SUSE LLC_
 
 The code and documentation is distributed under the Apache 2 license (http://www.apache.org/licenses/LICENSE-2.0.html). Contributions back to the source are encouraged.
 
