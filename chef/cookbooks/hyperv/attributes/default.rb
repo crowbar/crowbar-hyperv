@@ -68,7 +68,7 @@ default[:pip][:command] = 'C:\Python27\Scripts\pip.exe'
 default[:git][:url] = "http://msysgit.googlecode.com/files/Git-1.8.1.2-preview20130201.exe"
 default[:git][:command] = "\"C:\\Program Files (x86)\\Git\\bin\\git.exe\""
 
-default[:deps][:nova] = "eventlet iso8601 webob netaddr paste pastedeploy routes wmi sqlalchemy sqlalchemy-migrate kombu==1.0.4"
+default[:deps][:nova] = "eventlet iso8601 webob netaddr paste pastedeploy routes wmi sqlalchemy sqlalchemy-migrate kombu==1.0.4 requests==1.2.2 httplib2 alembic pbr"
 
 default[:openstack][:location] = 'C:\OpenStack'
 default[:openstack][:git][:clients] = ["python-keystoneclient", "python-cinderclient", "python-glanceclient", "python-quantumclient", "python-novaclient"]
@@ -79,14 +79,29 @@ default[:openstack][:nova][:version] = "2013.1.1"
 default[:openstack][:nova][:url] = "https://launchpad.net/nova/grizzly/2013.1.1/+download/nova-2013.1.1.tar.gz"
 default[:openstack][:nova][:file] = "nova-2013.1.1.tar.gz"
 default[:openstack][:nova][:target] = "#{node[:openstack][:location]}"
-default[:openstack][:nova][:installed] = "#{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}"
+default[:openstack][:nova][:installed] = "#{node[:python][:path]}\\Scripts\\nova-compute"
 
 default[:openstack][:quantum][:name] = "quantum"
 default[:openstack][:quantum][:version] = "2013.1.1"
 default[:openstack][:quantum][:url] = "https://launchpad.net/quantum/grizzly/2013.1.1/+download/quantum-2013.1.1.tar.gz"
 default[:openstack][:quantum][:file] = "quantum-2013.1.1.tar.gz"
 default[:openstack][:quantum][:target] = "#{node[:openstack][:location]}"
-default[:openstack][:quantum][:installed] = "#{node[:openstack][:location]}\\#{node[:openstack][:quantum][:name]}"
+default[:openstack][:quantum][:installed] = "#{node[:python][:path]}\\Scripts\\quantum-hyperv-agent.exe"
+
+default[:openstack][:instances] = "C:\\OpenStack\\Instances"
+default[:openstack][:config] = "C:\\OpenStack\\etc"
+default[:openstack][:bin] = "C:\\OpenStack\\bin"
+default[:openstack][:log] = "C:\\OpenStack\\log"
+
+default[:service][:file] = "OpenStackService.exe"
+default[:service][:nova][:name] = "nova-compute"
+default[:service][:nova][:displayname] = "Openstack Nova Compute Service" 
+default[:service][:nova][:description] = "Service Wrapper for Openstack Nova Compute - Manages the Openstack Nova Compute as a Windows Service"
+#default[:service][:nova][:path] = "#{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}\\"
+default[:service][:quantum][:name] = "quantum-hyperv-agent"
+default[:service][:quantum][:displayname] = "OpenStack Quantum Hyper-V Agent Service"
+default[:service][:quantum][:description] = "Service Wrapper for Openstack Quantum Hyper-V Agent - Manages the OpenStack Quantum Hyper-V Agent as a Windows Service"
+#default[:service][:quantum][:path] = ""
 
 #
 # Database Settings
@@ -127,12 +142,3 @@ default[:hyperv][:network_size] = 256
 
 default[:hyperv][:service_user] = "nova"
 default[:hyperv][:service_password] = "nova"
-
-#
-# Files location settings
-#
-
-default[:location][:config] = "C:\OpenStack\etc"
-default[:location][:logs] = "C:\OpenStack\Logs"
-default[:location][:exec] = "C:\OpenStack\bin"
-default[:location][:instances] = "C:\OpenStack\Instances"

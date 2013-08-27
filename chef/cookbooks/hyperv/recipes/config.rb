@@ -2,23 +2,22 @@ raise if not node[:platform] == 'windows'
 
 nova_path = "C:\OpenStack\etc"
 
-include_recipe "database::client"
-
-sqls = search_env_filtered(:node, "roles:database-server")
+=begin
+sqls = search(:node, "roles:database-server")
 if sqls.length > 0
   sql = sqls[0]
   sql = node if sql.name == node.name
 else
   sql = node
 end
-backend_name = Chef::Recipe::Database::Util.get_backend_name(sql)
+backend_name = sql[:database][:sql_engine]
 
 database_address = Chef::Recipe::Barclamp::Inventory.get_network_by_type(sql, "admin").address if database_address.nil?
 Chef::Log.info("database server found at #{database_address}")
 db_conn_scheme = backend_name
 database_connection = "#{db_conn_scheme}://#{node[:hyperv][:db][:user]}:#{node[:hyperv][:db][:password]}@#{database_address}/#{node[:hyperv][:db][:database]}"
 
-rabbits = search_env_filtered(:node, "roles:rabbitmq-server")
+rabbits = search(:node, "roles:rabbitmq-server")
 if rabbits.length > 0
   rabbit = rabbits[0]
   rabbit = node if rabbit.name == node.name
@@ -35,7 +34,7 @@ rabbit_settings = {
   :vhost => rabbit[:rabbitmq][:vhost]
 }
 
-apis = search_env_filtered(:node, "recipes:nova\\:\\:api")
+apis = search(:node, "recipes:nova\\:\\:api")
 if apis.length > 0 and !node[:nova][:network][:ha_enabled]
   api = apis[0]
   api = node if api.name == node.name
@@ -47,17 +46,18 @@ admin_api_host = api[:fqdn]
 # For the public endpoint, we prefer the public name. If not set, then we
 # use the IP address except for SSL, where we always prefer a hostname
 # (for certificate validation).
-public_api_host = api[:crowbar][:public_name]
-if public_api_host.nil? or public_api_host.empty?
-  unless api[:nova][:ssl][:enabled]
-    public_api_host = Chef::Recipe::Barclamp::Inventory.get_network_by_type(api, "public").address
-  else
-    public_api_host = 'public.'+api[:fqdn]
-  end
-end
-Chef::Log.info("Api server found at #{admin_api_host} #{public_api_host}")
 
-dns_servers = search_env_filtered(:node, "roles:dns-server")
+#public_api_host = api[:crowbar][:public_name]
+#if public_api_host.nil? or public_api_host.empty?
+#  unless api[:nova][:ssl][:enabled]
+#    public_api_host = Chef::Recipe::Barclamp::Inventory.get_network_by_type(api, "public").address
+#  else
+#    public_api_host = 'public.'+api[:fqdn]
+#  end
+#end
+#Chef::Log.info("Api server found at #{admin_api_host} #{public_api_host}")
+
+dns_servers = search(:node, "roles:dns-server")
 if dns_servers.length > 0
   dns_server = dns_servers[0]
   dns_server = node if dns_server.name == node.name
@@ -67,7 +67,7 @@ end
 dns_server_public_ip = Chef::Recipe::Barclamp::Inventory.get_network_by_type(dns_server, "public").address
 Chef::Log.info("DNS server found at #{dns_server_public_ip}")
 
-glance_servers = search_env_filtered(:node, "roles:glance-server")
+glance_servers = search(:node, "roles:glance-server")
 if glance_servers.length > 0
   glance_server = glance_servers[0]
   glance_server = node if glance_server.name == node.name
@@ -83,25 +83,25 @@ else
 end
 Chef::Log.info("Glance server at #{glance_server_host}")
 
-vncproxies = search_env_filtered(:node, "recipes:nova\\:\\:vncproxy")
-if vncproxies.length > 0
-  vncproxy = vncproxies[0]
-  vncproxy = node if vncproxy.name == node.name
-else
-  vncproxy = node
-end
+#vncproxies = search(:node, "recipes:nova\\:\\:vncproxy")
+#if vncproxies.length > 0
+#  vncproxy = vncproxies[0]
+#  vncproxy = node if vncproxy.name == node.name
+#else
+#  vncproxy = node
+#end
 # For the public endpoint, we prefer the public name. If not set, then we
 # use the IP address except for SSL, where we always prefer a hostname
 # (for certificate validation).
-vncproxy_public_host = vncproxy[:crowbar][:public_name]
-if vncproxy_public_host.nil? or vncproxy_public_host.empty?
-  unless vncproxy[:nova][:novnc][:ssl][:enabled]
-    vncproxy_public_host = Chef::Recipe::Barclamp::Inventory.get_network_by_type(vncproxy, "public").address
-  else
-    vncproxy_public_host = 'public.'+vncproxy[:fqdn]
-  end
-end
-Chef::Log.info("VNCProxy server at #{vncproxy_public_host}")
+#vncproxy_public_host = vncproxy[:crowbar][:public_name]
+#if vncproxy_public_host.nil? or vncproxy_public_host.empty?
+#  unless vncproxy[:nova][:novnc][:ssl][:enabled]
+#    vncproxy_public_host = Chef::Recipe::Barclamp::Inventory.get_network_by_type(vncproxy, "public").address
+#  else
+#    vncproxy_public_host = 'public.'+vncproxy[:fqdn]
+#  end
+#end
+#Chef::Log.info("VNCProxy server at #{vncproxy_public_host}")
 
 def mask_to_bits(mask)
   octets = mask.split(".")
@@ -159,7 +159,7 @@ else
   node.set[:nova][:network][:vlan_start] = fixed_net["vlan"]
 end
 
-keystones = search_env_filtered(:node, "recipes:keystone\\:\\:server")
+keystones = search(:node, "recipes:keystone\\:\\:server")
 if keystones.length > 0
   keystone = keystones[0]
   keystone = node if keystone.name == node.name
@@ -185,7 +185,7 @@ else
   cinder_insecure = false
 end
 
-quantum_servers = search_env_filtered(:node, "roles:quantum-server")
+quantum_servers = search(:node, "roles:quantum-server")
 if quantum_servers.length > 0
   quantum_server = quantum_servers[0]
   quantum_server = node if quantum_server.name == node.name
@@ -209,8 +209,46 @@ else
   quantum_service_password = nil
 end
 Chef::Log.info("Quantum server at #{quantum_server_host}")
+=end
 
-template "#{node[:location][:config]}\nova.conf" do
+directory "#{node[:openstack][:instances]}" do
+  action :create
+  recursive true
+end
+
+directory "#{node[:openstack][:config]}" do
+  action :create
+  recursive true
+end
+
+directory "#{node[:openstack][:bin]}" do
+  action :create
+  recursive true
+end
+
+directory "#{node[:openstack][:log]}" do
+  action :create
+  recursive true
+end
+
+cookbook_file "#{node[:openstack][:bin]}\\OpenStackService.exe" do
+  source "OpenStackService.exe"
+end
+
+cookbook_file "#{node[:openstack][:bin]}\\mkisofs.exe" do
+  source "mkisofs.exe"
+end
+
+cookbook_file "#{node[:openstack][:bin]}\\mkisofs_license.txt" do
+  source "mkisofs_license.txt"
+end
+
+cookbook_file "#{node[:openstack][:bin]}\\qemu-img.exe" do
+  source "qemu-img.exe"
+end
+
+=begin
+template "#{node[:openstack][:config]}\\nova.conf" do
   source "nova.conf.erb"
   variables(
             :glance_server_host => glance_server_host,
@@ -226,21 +264,27 @@ template "#{node[:location][:config]}\nova.conf" do
             :keystone_host => keystone_host,
             :keystone_admin_port => keystone_admin_port,
             :rabbit_settings => rabbit_settings,
+            :instances_path => node[:openstack][:instances],
+            :openstack_config => node[:openstack][:config],
+            :openstack_bin => node[:openstack][:bin],
+            :openstack_log => node[:openstack][:log]
            )
 end
 
-template "#{node[:location][:config]}\quantum_hyperv_agent.conf" do
+template "#{node[:openstack][:config]}\\quantum_hyperv_agent.conf" do
   source "quantum_hyperv_agent.conf.erb"
   variables(
-            :rabbit_settings => rabbit_settings
+            :rabbit_settings => rabbit_settings,
+            :openstack_log => node[:openstack][:log]
            )
 end
+=end
 
-cookbook_file "#{node[:location][:config]}\policy.json" do
+cookbook_file "#{node[:openstack][:config]}\\policy.json" do
   source "policy.json"
 end
 
-cookbook_file "#{node[:location][:config]}\interfaces.template" do
+cookbook_file "#{node[:openstack][:config]}\\interfaces.template" do
   source "interfaces.template"
 end
 

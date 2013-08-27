@@ -1,8 +1,26 @@
 raise if not node[:platform] == 'windows'
 
-node[:features_list][:windows].each do |feature_list|
-  windows_feature feature_list do
-    action :install
+include_recipe 'windows::reboot_handler'
+node.default[:windows][:allow_pending_reboots] = false
+
+if !node[:windows_features_installed]
+
+  node[:features_list][:windows].each do |feature_list|
+    windows_feature feature_list do
+      action :install
+    end
   end
-  notifies 'windows_reboot[60]'
+
+  ruby_block 'set_windows_features_install_flag' do
+    block do
+      node.set[:windows_features_installed] = true
+    end
+  end
+
+  windows_reboot 60 do
+    reason 'Installing required Windows features requires a reboot'
+    action :request
+  end
+
 end
+

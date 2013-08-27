@@ -6,7 +6,7 @@ rabbit_host=<%= @rabbit_settings[:address] %>
 rabbit_port=<%= @rabbit_settings[:port] %>
 rabbit_userid=<%= @rabbit_settings[:user] %>
 rabbit_password=<%= @rabbit_settings[:password] %>
-logdir=<%= @node[:location][:logs]>
+logdir=<%= @openstack_log%>
 logfile=quantum-hyperv-agent.log
 [AGENT]
 polling_interval=2

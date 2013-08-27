@@ -1,7 +1,7 @@
 raise if not node[:platform] == 'windows'
 
 #Fetch and install Python Win32 from Chef server
-cookbook_file "#{node[:cache_location]}#{node[:pymysql][:file]} do
+cookbook_file "#{node[:cache_location]}#{node[:pymysql][:file]}" do
   source node[:pymysql][:file]
   not_if {::File.exists?(node[:pymysql][:installed])}
 end

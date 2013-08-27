@@ -1,8 +1,13 @@
 raise if not node[:platform] == 'windows'
 
 # install Python 2.7.3
-windows_package "Python 2.7.3" do
+
+cookbook_file "#{node[:cache_location]}#{node[:python][:file]}" do
   source node[:python][:file]
+end
+
+windows_package "Python 2.7.3" do
+  source "#{node[:cache_location]}#{node[:python][:file]}"
   installer_type :msi
   action :install
 end

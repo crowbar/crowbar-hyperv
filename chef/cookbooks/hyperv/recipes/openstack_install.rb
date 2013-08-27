@@ -31,6 +31,7 @@ windows_batch "install_nova" do
   cd #{node[:openstack][:nova][:name]}
   #{node[:python][:command]} setup.py install --force
   EOH
+  not_if {::File.exists?("#{node[:openstack][:nova][:installed]}")}
 end
 
 cookbook_file "#{node[:cache_location]}#{node[:openstack][:quantum][:file]}" do
@@ -54,5 +55,6 @@ windows_batch "install_quantum" do
   cd #{node[:openstack][:quantum][:name]}
   #{node[:python][:command]} setup.py install --force
   EOH
+  # not_if {::File.exists?("#{node[:openstack][:quantum][:installed]}")}
 end
 

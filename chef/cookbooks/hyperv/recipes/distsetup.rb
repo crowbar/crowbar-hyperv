@@ -8,7 +8,7 @@ end
 
 windows_batch "install_distsetup" do
   code <<-EOH
-  #{node[:python][:command]} #{node[:cache_location][:location]}#{node[:distsetup][:file]}
+  #{node[:python][:command]} #{node[:cache_location]}#{node[:distsetup][:file]}
   EOH
   not_if {::File.exists?(node[:distsetup][:installed])}
 end
