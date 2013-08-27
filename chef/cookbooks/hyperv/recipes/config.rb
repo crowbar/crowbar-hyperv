@@ -2,7 +2,6 @@ raise if not node[:platform] == 'windows'
 
 nova_path = "C:\OpenStack\etc"
 
-=begin
 sqls = search(:node, "roles:database-server")
 if sqls.length > 0
   sql = sqls[0]
@@ -209,7 +208,6 @@ else
   quantum_service_password = nil
 end
 Chef::Log.info("Quantum server at #{quantum_server_host}")
-=end
 
 directory "#{node[:openstack][:instances]}" do
   action :create
@@ -247,7 +245,6 @@ cookbook_file "#{node[:openstack][:bin]}\\qemu-img.exe" do
   source "qemu-img.exe"
 end
 
-=begin
 template "#{node[:openstack][:config]}\\nova.conf" do
   source "nova.conf.erb"
   variables(
@@ -278,7 +275,6 @@ template "#{node[:openstack][:config]}\\quantum_hyperv_agent.conf" do
             :openstack_log => node[:openstack][:log]
            )
 end
-=end
 
 cookbook_file "#{node[:openstack][:config]}\\policy.json" do
   source "policy.json"
