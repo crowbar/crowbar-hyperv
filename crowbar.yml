@@ -15,7 +15,7 @@
 barclamp:
   name: hyperv
   display: Hyper-V
-  description: Install Openstack Nova Compute on Windows Server 2012
+  description: 'OpenStack Compute for Hyper-V on Windows Server 2012'
   proposal_schema_version: 1
   # controlls if barclamp is shown in UI list (true=yes)
   user_managed: true
@@ -39,8 +39,7 @@ barclamp:
   # muliple groups, and a group name can be used instead of a barclamp
   # in a requires: clause by prefixing it with an @ sign. 
   member:
-#    - barclamp-group
-#    - another-barclamp-group
+    - openstack
   # Os_support allows you to declare that this barclamp only supports
   # specific operating systems.  If you don't have an os_support
   # section, Crowbar will assume the barclamp works on all the operating
@@ -55,14 +54,8 @@ crowbar:
   chef_order: 1000
   proposal_schema_version: 2
 
-nav:
-  barclamps:
-    hyperv: barclamp_modules_path(:id=>'hyperv')
-
 locale_additions:
   en:
-    nav:
-      hyperv: Hyper-V
     barclamp:
       hyperv_edit_attributes: 
         attributes: Attributes
