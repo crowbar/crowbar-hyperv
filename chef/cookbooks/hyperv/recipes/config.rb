@@ -47,6 +47,14 @@ keystone_admin_port = keystone["keystone"]["api"]["admin_port"]
 keystone_service_tenant = keystone["keystone"]["service"]["tenant"]
 Chef::Log.info("Keystone server found at #{keystone_host}")
 
+cinder_servers = search(:node, "roles:cinder-controller") || []
+if cinder_servers.length > 0
+  cinder_server = cinder_servers[0]
+  cinder_insecure = cinder_server[:cinder][:api][:protocol] == 'https' && cinder_server[:cinder][:ssl][:insecure]
+else
+  cinder_insecure = false
+end
+
 quantum_servers = search(:node, "roles:quantum-server")
 if quantum_servers.length > 0
   quantum_server = quantum_servers[0]
@@ -72,40 +80,18 @@ else
 end
 Chef::Log.info("Quantum server at #{quantum_server_host}")
 
-directory "#{node[:openstack][:instances]}" do
-  action :create
-  recursive true
+dirs = [ node[:openstack][:instances], node[:openstack][:config], node[:openstack][:bin], node[:openstack][:log] ]
+dirs.each do |dir|
+  directory dir do
+    action :create
+    recursive true
+  end
 end
 
-directory "#{node[:openstack][:config]}" do
-  action :create
-  recursive true
-end
-
-directory "#{node[:openstack][:bin]}" do
-  action :create
-  recursive true
-end
-
-directory "#{node[:openstack][:log]}" do
-  action :create
-  recursive true
-end
-
-cookbook_file "#{node[:openstack][:bin]}\\OpenStackService.exe" do
-  source "OpenStackService.exe"
-end
-
-cookbook_file "#{node[:openstack][:bin]}\\mkisofs.exe" do
-  source "mkisofs.exe"
-end
-
-cookbook_file "#{node[:openstack][:bin]}\\mkisofs_license.txt" do
-  source "mkisofs_license.txt"
-end
-
-cookbook_file "#{node[:openstack][:bin]}\\qemu-img.exe" do
-  source "qemu-img.exe"
+%w{ OpenStackService.exe mkisofs.exe mkisofs_license.txt qemu-img.exe }.each do |bin_file|
+  cookbook_file "#{node[:openstack][:bin]}\\#{bin_file}" do
+    source bin_file
+  end
 end
 
 template "#{node[:openstack][:config]}\\nova.conf" do
