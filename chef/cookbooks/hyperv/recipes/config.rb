@@ -1,7 +1,5 @@
 raise if not node[:platform] == 'windows'
 
-nova_path = "C:\OpenStack\etc"
-
 rabbits = search(:node, "roles:rabbitmq-server")
 if rabbits.length > 0
   rabbit = rabbits[0]
