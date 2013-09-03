@@ -30,18 +30,13 @@ class HypervService < ServiceObject
 
   def proposal_dependencies(role)
     answer = []
-    answer << { "barclamp" => "database", "inst" => role.default_attributes["hyperv"]["db"]["database_instance"] }
     answer << { "barclamp" => "keystone", "inst" => role.default_attributes["hyperv"]["keystone_instance"] }
     answer << { "barclamp" => "glance", "inst" => role.default_attributes["hyperv"]["glance_instance"] }
     answer << { "barclamp" => "rabbitmq", "inst" => role.default_attributes["hyperv"]["rabbitmq_instance"] }
-    answer << { "barclamp" => "cinder", "inst" => role.default_attributes["hyperv"]["cinder_instance"] }
     if role.default_attributes["hyperv"]["use_gitrepo"]
       answer << { "barclamp" => "git", "inst" => role.default_attributes["hyperv"]["git_instance"] }
     end
-
-    if role.default_attributes["hyperv"]["networking_backend"] == "quantum"
-      answer << { "barclamp" => "quantum", "inst" => role.default_attributes["hyperv"]["quantum_instance"] }
-    end
+    answer << { "barclamp" => "quantum", "inst" => role.default_attributes["hyperv"]["quantum_instance"] }
     answer
   end
   
@@ -72,27 +67,6 @@ class HypervService < ServiceObject
       end
     rescue
       @logger.info("#{@bc_name} create_proposal: no git found")
-    end
-
-    base["attributes"]["hyperv"]["db"]["database_instance"] = ""
-    begin
-      databaseService = DatabaseService.new(@logger)
-      dbs = databaseService.list_active[1]
-      if dbs.empty?
-        # No actives, look for proposals
-        dbs = databaseService.proposals[1]
-      end
-      if dbs.empty?
-        @logger.info("Hyperv create_proposal: no database proposal found")
-      else
-        base["attributes"]["hyperv"]["db"]["database_instance"] = dbs[0]
-      end
-    rescue
-      @logger.info("Hyperv create_proposal: no database found")
-    end
-
-    if base["attributes"]["hyperv"]["db"]["database_instance"] == ""
-      raise(I18n.t('model.service.dependency_missing', :name => @bc_name, :dependson => "database"))
     end
 
     base["attributes"]["hyperv"]["rabbitmq_instance"] = ""
@@ -129,8 +103,6 @@ class HypervService < ServiceObject
       raise(I18n.t('model.service.dependency_missing', :name => @bc_name, :dependson => "keystone"))
     end
 
-    base["attributes"]["hyperv"]["service_password"] = '%012d' % rand(1e12)
-
     base["attributes"]["hyperv"]["glance_instance"] = ""
     begin
       glanceService = GlanceService.new(@logger)
@@ -146,23 +118,6 @@ class HypervService < ServiceObject
 
     if base["attributes"]["hyperv"]["glance_instance"] == ""
       raise(I18n.t('model.service.dependency_missing', :name => @bc_name, :dependson => "glance"))
-    end
-
-    base["attributes"]["hyperv"]["cinder_instance"] = ""
-    begin
-      cinderService = CinderService.new(@logger)
-      cinders = cinderService.list_active[1]
-      if cinders.empty?
-        # No actives, look for proposals
-        cinders = cinderService.proposals[1]
-      end
-      base["attributes"]["hyperv"]["cinder_instance"] = cinders[0] unless cinders.empty?
-    rescue
-      @logger.info("Hyperv create_proposal: no cinder found")
-    end
-
-    if base["attributes"]["hyperv"]["cinder_instance"] == ""
-      raise(I18n.t('model.service.dependency_missing', :name => @bc_name, :dependson => "cinder"))
     end
 
     base["attributes"]["hyperv"]["quantum_instance"] = ""
@@ -182,8 +137,6 @@ class HypervService < ServiceObject
       raise(I18n.t('model.service.dependency_missing', :name => @bc_name, :dependson => "quantum"))
     end
 
-    base["attributes"]["hyperv"]["db"]["password"] = random_password
-
     @logger.debug("Hyperv create_proposal: exiting")
     base
   end
@@ -194,34 +147,17 @@ class HypervService < ServiceObject
 
     net_svc = NetworkService.new @logger
     tnodes = role.override_attributes["hyperv"]["elements"]["nova-multi-controller"]
-    if role.default_attributes["hyperv"]["networking_backend"]=="quantum"
-      tnodes.each do |n|
-        net_svc.allocate_ip "default","public","host",n
-      end unless tnodes.nil?
-      quantum = ProposalObject.find_proposal("quantum",role.default_attributes["hyperv"]["quantum_instance"])
-      all_nodes.each do |n|
-        if quantum["attributes"]["quantum"]["networking_mode"] == "gre"
-          net_svc.allocate_ip "default", "os_sdn", "host", n
-        else
-          net_svc.enable_interface "default", "nova_fixed", n
-        end
-      end unless all_nodes.nil?
-    else
-      tnodes = all_nodes if role.default_attributes["hyperv"]["network"]["ha_enabled"]
-      unless tnodes.nil? or tnodes.empty?
-        tnodes.each do |n|
-          net_svc.allocate_ip "default", "public", "host", n
-          unless role.default_attributes["hyperv"]["network"]["tenant_vlans"]
-            net_svc.allocate_ip "default", "nova_fixed", "router", n
-          end
-        end
+    tnodes.each do |n|
+      net_svc.allocate_ip "default","public","host",n
+    end unless tnodes.nil?
+    quantum = ProposalObject.find_proposal("quantum",role.default_attributes["hyperv"]["quantum_instance"])
+    all_nodes.each do |n|
+      if quantum["attributes"]["quantum"]["networking_mode"] == "gre"
+        net_svc.allocate_ip "default", "os_sdn", "host", n
+      else
+        net_svc.enable_interface "default", "nova_fixed", n
       end
-      unless role.default_attributes["hyperv"]["network"]["tenant_vlans"]
-        all_nodes.each do |n|
-          net_svc.enable_interface "default", "nova_fixed", n
-        end
-      end
-    end
+    end unless all_nodes.nil?
     @logger.debug("Hyperv apply_role_pre_chef_call: leaving")
   end
 end
