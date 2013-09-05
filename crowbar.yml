@@ -25,13 +25,6 @@ barclamp:
   # All barclamps implicitly rely on the crowbar barclamp.
   requires:
     - '@crowbar'
-    - rabbitmq
-    - glance
-    - keystone
-    - quantum
-
-#    - another-barclamp # rely on a single other barclamp
-#    - @barclamp-group  # rely on another group of barclamps.
   # Member allows you to declare that this barclamp is a member
   # of a group of related barclamp.  A barclamp can be a member of 
   # muliple groups, and a group name can be used instead of a barclamp
@@ -51,11 +44,3 @@ crowbar:
   run_order: 1000
   chef_order: 1000
   proposal_schema_version: 2
-
-locale_additions:
-  en:
-    barclamp:
-      hyperv_edit_attributes: 
-        attributes: Attributes
-      hyperv_edit_deployment: 
-        deployment: Deployment
