@@ -30,7 +30,6 @@ barclamp:
   # muliple groups, and a group name can be used instead of a barclamp
   # in a requires: clause by prefixing it with an @ sign. 
   member:
-    - openstack
   # Os_support allows you to declare that this barclamp only supports
   # specific operating systems.  If you don't have an os_support
   # section, Crowbar will assume the barclamp works on all the operating
