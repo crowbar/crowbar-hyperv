@@ -248,8 +248,10 @@ end
 template "#{node[:openstack][:config]}\\nova.conf" do
   source "nova.conf.erb"
   variables(
+            :glance_server_protocol => glance_server_protocol,
             :glance_server_host => glance_server_host,
             :glance_server_port => glance_server_port,
+            :glance_server_insecure => glance_server_insecure,
             :quantum_protocol => quantum_protocol,
             :quantum_server_host => quantum_server_host,
             :quantum_server_port => quantum_server_port,

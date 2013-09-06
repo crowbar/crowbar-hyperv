@@ -5,7 +5,8 @@ compute_driver=nova.virt.hyperv.driver.HyperVDriver
 volume_api_class=nova.volume.cinder.API
 fake_network=true
 instances_path=<%= @instances_path%>
-glance_api_servers=<%= @glance_server_host%>:<%= @glance_server_port%>
+<%= "glance_api_servers=#{@glance_server_protocol}://#{@glance_server_host}:#{@glance_server_port}" unless @glance_server_host.nil? %>
+<%= "glance_api_insecure=#{@glance_server_insecure ? 'True' : 'False'}" unless @glance_server_host.nil? %>
 use_cow_images=true
 force_config_drive=false
 injected_network_template=<%= @openstack_config%>\interfaces.template
