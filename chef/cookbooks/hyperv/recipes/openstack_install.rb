@@ -17,7 +17,7 @@ end
 
 windows_batch "unzip_nova" do
   code <<-EOH
-  #{node[:sevenzip][:command]} x #{node[:cache_location]}#{node[:openstack][:nova][:file]} -o#{node[:openstack][:location]} -r -y
+  #{node[:sevenzip][:command]} x #{node[:cache_location]}#{node[:openstack][:nova][:file]} -o#{node[:openstack][:location]}\\dist -r -y
   #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:nova][:name]}-#{node[:openstack][:nova][:version]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
   ren #{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}-#{node[:openstack][:nova][:version]} #{node[:openstack][:nova][:name]}
@@ -41,7 +41,7 @@ end
 
 windows_batch "unzip_quantum" do
   code <<-EOH
-  #{node[:sevenzip][:command]} x #{node[:cache_location]}#{node[:openstack][:quantum][:file]} -o#{node[:openstack][:location]} -r -y
+  #{node[:sevenzip][:command]} x #{node[:cache_location]}#{node[:openstack][:quantum][:file]} -o#{node[:openstack][:location]}\\dist -r -y
   #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:quantum][:name]}-#{node[:openstack][:quantum][:version]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
   ren #{node[:openstack][:location]}\\#{node[:openstack][:quantum][:name]}-#{node[:openstack][:quantum][:version]} #{node[:openstack][:quantum][:name]}
