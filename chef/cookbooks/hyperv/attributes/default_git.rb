@@ -25,9 +25,6 @@ default[:vexasoft][:url]  = "http://cdn.shopify.com/s/files/1/0206/6424/files/Ve
 default[:sevenzip][:url] = "http://downloads.sourceforge.net/project/sevenzip/7-Zip/9.22/7z922-x64.msi?r=&ts=1369426091&use_mirror=kent"
 default[:sevenzip][:command] = "\"C:\\Program Files\\7-Zip\\7z.exe\""
 
-default[:vscpp][:"2010"][:url] = "http://download.microsoft.com/download/1/D/9/1D9A6C0E-FC89-43EE-9658-B9F0E3A76983/vc_web.exe"
-default[:vscpp][:"2012"][:url] = "http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU1/vcredist_x86.exe"
-
 default[:python][:url] = "http://www.python.org/ftp/python/2.7.3/python-2.7.3.msi"
 default[:python][:command] = 'C:\Python27\python.exe'
 default[:python][:sitepackages] = 'C:\Python27\lib\site-packages'
