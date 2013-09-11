@@ -19,9 +19,6 @@ default[:features_list][:windows] = default[:features_list][:management] + defau
 default[:time][:server] = "bonehed.lcs.mit.edu"
 default[:time][:zone]  = "Eastern Standard Time"
 
-#default[:vexasoft][:url]  = "http://www.vexasoft.com/cmdletlibrary/resources/3.0.0/VexasoftCmdletLibrary_x64.msi"
-default[:vexasoft][:url]  = "http://cdn.shopify.com/s/files/1/0206/6424/files/Vexasoft_Cmdlet_Library_x64.msi"
-
 default[:sevenzip][:url] = "http://downloads.sourceforge.net/project/sevenzip/7-Zip/9.22/7z922-x64.msi?r=&ts=1369426091&use_mirror=kent"
 default[:sevenzip][:command] = "\"C:\\Program Files\\7-Zip\\7z.exe\""
 
