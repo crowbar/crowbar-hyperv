@@ -11,21 +11,12 @@ default[:features_list][:windows] = default[:features_list][:management] + defau
 default[:time][:server] = "bonehed.lcs.mit.edu"
 default[:time][:zone]  = "Eastern Standard Time"
 
-default[:vexasoft][:url]  = "http://cdn.shopify.com/s/files/1/0206/6424/files/Vexasoft_Cmdlet_Library_x64.msi"
-default[:vexasoft][:location]  = "#{Chef::Config[:file_cache_path]}/"
-default[:vexasoft][:file] = "Vexasoft_Cmdlet_Library_x64.msi"
-
 default[:sevenzip][:url] = "http://downloads.sourceforge.net/project/sevenzip/7-Zip/9.22/7z922-x64.msi?r=&ts=1369426091&use_mirror=kent"
 default[:sevenzip][:location] = "#{Chef::Config[:file_cache_path]}/"
 default[:sevenzip][:file] = "7z922-x64.msi"
 default[:sevenzip][:command] = "\"C:\\Program Files\\7-Zip\\7z.exe\""
 
 default[:cache_location] = "#{Chef::Config[:file_cache_path]}/"
-
-default[:vscpp][:"2008"][:url] = "http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe"
-default[:vscpp][:"2008"][:file] = "vcredist_x86.exe"
-#default[:vscpp][:"2010"][:url] = "http://download.microsoft.com/download/5/B/C/5BC5DBB3-652D-4DCE-B14A-475AB85EEF6E/vcredist_x86.exe"
-#default[:vscpp][:"2012"][:url] = "http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU1/vcredist_x86.exe"
 
 default[:python][:url] = "http://www.python.org/ftp/python/2.7.3/python-2.7.3.msi"
 default[:python][:file] = "python-2.7.3.msi"
