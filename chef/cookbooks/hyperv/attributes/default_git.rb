@@ -16,9 +16,6 @@ default[:features_list][:iscsi_target] = ["File-Services", "CoreFileServer", "iS
 
 default[:features_list][:windows] = default[:features_list][:management] + default[:features_list][:hyperv] + default[:features_list][:iscsi_target]
 
-default[:time][:server] = "bonehed.lcs.mit.edu"
-default[:time][:zone]  = "Eastern Standard Time"
-
 default[:sevenzip][:url] = "http://downloads.sourceforge.net/project/sevenzip/7-Zip/9.22/7z922-x64.msi?r=&ts=1369426091&use_mirror=kent"
 default[:sevenzip][:command] = "\"C:\\Program Files\\7-Zip\\7z.exe\""
 
