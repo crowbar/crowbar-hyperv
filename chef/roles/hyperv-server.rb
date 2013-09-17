@@ -2,7 +2,6 @@ name "hyperv-server"
 description "Hyperv Server Role"
 run_list(
          "recipe[hyperv::windows_features]",
-         "recipe[hyperv::set_time]",
          "recipe[hyperv::setup_networking]",
          "recipe[hyperv::7zip]",
          "recipe[hyperv::python]",
