@@ -50,8 +50,8 @@ default[:m2crypto][:file] = "M2Crypto-0.21.1.win32-py2.7.msi"
 
 default[:easyinstall][:command] = 'C:\Python27\Scripts\easy_install.exe'
 
-default[:distsetup][:url] = "http://python-distribute.org/distribute_setup.py"
-default[:distsetup][:file] = "distribute_setup.py"
+default[:distsetup][:url] = "https://bitbucket.org/pypa/setuptools/raw/default/ez_setup.py"
+default[:distsetup][:file] = "ez_setup.py"
 default[:distsetup][:installed] = "#{node[:easyinstall][:command]}"
 
 default[:pip][:command] = 'C:\Python27\Scripts\pip.exe'

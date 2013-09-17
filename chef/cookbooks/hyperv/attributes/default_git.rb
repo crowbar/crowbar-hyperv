@@ -46,8 +46,8 @@ default[:m2crypto][:url] = "http://chandlerproject.org/pub/Projects/MeTooCrypto/
 
 default[:easyinstall][:command] = 'C:\Python27\Scripts\easy_install.exe'
 
-default[:distsetup][:url] = "http://python-distribute.org/distribute_setup.py"
-default[:distsetup][:location] = "#{Chef::Config[:file_cache_path]}/distribute_setup.py"
+default[:distsetup][:url] = "https://bitbucket.org/pypa/setuptools/raw/default/ez_setup.py"
+default[:distsetup][:location] = "#{Chef::Config[:file_cache_path]}/ez_setup.py"
 default[:distsetup][:installed] = "#{node[:easyinstall][:command]}"
 
 default[:pip][:command] = 'C:\Python27\Scripts\pip.exe'
