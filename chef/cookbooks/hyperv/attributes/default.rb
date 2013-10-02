@@ -15,8 +15,8 @@ default[:sevenzip][:command] = "\"C:\\Program Files\\7-Zip\\7z.exe\""
 
 default[:cache_location] = "#{Chef::Config[:file_cache_path]}/"
 
-default[:python][:url] = "http://www.python.org/ftp/python/2.7.3/python-2.7.3.msi"
-default[:python][:file] = "python-2.7.3.msi"
+default[:python][:url] = "http://www.python.org/ftp/python/2.7.5/python-2.7.5.msi"
+default[:python][:file] = "python-2.7.5.msi"
 default[:python][:command] = 'C:\Python27\python.exe'
 default[:python][:sitepackages] = 'C:\Python27\lib\site-packages'
 default[:python][:path] = 'C:\Python27'
