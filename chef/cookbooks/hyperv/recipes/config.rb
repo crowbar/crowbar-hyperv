@@ -248,11 +248,14 @@ end
 template "#{node[:openstack][:config]}\\nova.conf" do
   source "nova.conf.erb"
   variables(
+            :glance_server_protocol => glance_server_protocol,
             :glance_server_host => glance_server_host,
             :glance_server_port => glance_server_port,
+            :glance_server_insecure => glance_server_insecure,
             :quantum_protocol => quantum_protocol,
             :quantum_server_host => quantum_server_host,
             :quantum_server_port => quantum_server_port,
+            :quantum_insecure => quantum_insecure,
             :quantum_service_user => quantum_service_user,
             :quantum_service_password => quantum_service_password,
             :quantum_networking_plugin => quantum_networking_plugin,
@@ -260,6 +263,7 @@ template "#{node[:openstack][:config]}\\nova.conf" do
             :keystone_protocol => keystone_protocol,
             :keystone_host => keystone_host,
             :keystone_admin_port => keystone_admin_port,
+            :cinder_insecure => cinder_insecure,
             :rabbit_settings => rabbit_settings,
             :instances_path => node[:openstack][:instances],
             :openstack_config => node[:openstack][:config],
