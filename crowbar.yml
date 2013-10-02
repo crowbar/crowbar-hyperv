@@ -25,11 +25,9 @@ barclamp:
   # All barclamps implicitly rely on the crowbar barclamp.
   requires:
     - '@crowbar'
-    - database
     - rabbitmq
     - glance
     - keystone
-    - cinder
     - quantum
 
 #    - another-barclamp # rely on a single other barclamp

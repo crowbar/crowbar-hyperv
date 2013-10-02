@@ -9,10 +9,6 @@ supports         "windows"
 
 depends          "windows"
 depends          "powershell"
-#depends          "database"
 #depends          "keystone"
 #depends          "quantum"
 #depends          "glance"
-
-# note really necesssary to put cinder as dependency:
-#depends "cinder"

@@ -14,57 +14,15 @@
           "mapping": {
             "rabbitmq_instance": { "type": "str", "required": true },
             "keystone_instance": { "type": "str", "required": true },
-            "service_user": { "type": "str", "required": true },
-            "service_password": { "type": "str" },
             "glance_instance": { "type": "str", "required": true },
-            "cinder_instance": { "type": "str", "required": true },
             "quantum_instance": { "type": "str", "required": true },
             "verbose": { "type": "bool", "required": true },
-            "user": { "type": "str", "required": true },
             "gitrepo": { "type": "str", "required": true },
             "git_instance": { "type": "str", "required": true },
             "git_refspec": { "type": "str", "required": true },
             "use_gitrepo": { "type": "bool", "required": true },
             "use_gitbarclamp": { "type": "bool", "required": true },
-            "use_pip_cache": { "type": "bool", "required": true },
-            "networking_backend": { "type": "str", "required": true },
-            "network": {
-              "type": "map",
-              "required": false,
-              "mapping": {
-                "ha_enabled": { "type": "bool", "required": true },
-                "tenant_vlans": { "type": "bool", "required": true },
-                "dhcp_enabled": { "type": "bool", "required": true },
-                "allow_same_net_traffic": { "type": "bool", "required": true },
-                "public_interface": { "type": "str" },
-                "floating_range": { "type": "str" },
-                "fixed_range": { "type": "str" },
-                "num_networks": { "type": "int" },
-                "network_size": { "type": "int" },
-                "routing_source_ip": { "type": "str" },
-                "flat_network_bridge": { "type": "str" },
-                "flat_interface": { "type": "str" },
-                "flat_network_dhcp_start": { "type": "str" },
-                "vlan_start": { "type": "int" }
-              }
-            },
-            "scheduler": {
-              "type": "map",
-              "mapping": {
-                "ram_allocation_ratio": { "type": "number" },
-                "cpu_allocation_ratio": { "type": "number" }
-              }
-            },
-            "db": {
-              "type": "map",
-              "required": true,
-              "mapping": {
-                "database_instance": { "type": "str", "required": true },
-                "password": { "type": "str", "required": true },
-                "user": { "type": "str", "required": true },
-                "database": { "type": "str", "required": true }
-              }
-            }
+            "use_pip_cache": { "type": "bool", "required": true }
           }
         }
       }
