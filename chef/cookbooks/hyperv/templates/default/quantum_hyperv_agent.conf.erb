@@ -6,6 +6,9 @@ rabbit_host=<%= @rabbit_settings[:address] %>
 rabbit_port=<%= @rabbit_settings[:port] %>
 rabbit_userid=<%= @rabbit_settings[:user] %>
 rabbit_password=<%= @rabbit_settings[:password] %>
+# the RabbitMQ virtual host (string value)
+rabbit_virtual_host=<%= @rabbit_settings[:vhost] %>
+
 logdir=<%= @openstack_log%>
 logfile=quantum-hyperv-agent.log
 [AGENT]
