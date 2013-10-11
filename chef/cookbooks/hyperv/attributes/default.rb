@@ -18,7 +18,7 @@ default[:python][:file] = "python-2.7.5.msi"
 default[:python][:command] = 'C:\Python27\python.exe'
 default[:python][:sitepackages] = 'C:\Python27\lib\site-packages'
 default[:python][:path] = 'C:\Python27'
-default[:python][:scripts] = 'C:\Python27\Scripts\'
+default[:python][:scripts] = 'C:\Python27\Scripts'
 
 default[:python][:archive] = 'python275.zip'
 default[:python][:installed] = "#{node[:python][:sitepackages]}\\greenlet.pyd"
