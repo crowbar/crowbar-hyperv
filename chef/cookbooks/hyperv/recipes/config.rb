@@ -88,7 +88,7 @@ dirs.each do |dir|
   end
 end
 
-%w{ OpenStackService.exe mkisofs.exe mkisofs_license.txt qemu-img.exe }.each do |bin_file|
+%w{ OpenStackService.exe mkisofs.exe mkisofs_license.txt qemu-img.exe intl.dll libglib-2.0-0.dll libssp-0.dll zlib1.dll }.each do |bin_file|
   cookbook_file "#{node[:openstack][:bin]}\\#{bin_file}" do
     source bin_file
   end
