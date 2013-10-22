@@ -21,7 +21,14 @@ unless node[:python_win32_registered]
 #{node[:python][:command]} #{node[:python][:scripts]}\\#{node[:python][:pywin32register]} -install
     EOH
   end
-  node.set[:python_win32_registered] = true
-  node.save
 end
+
+ruby_block "python_win32_registered" do
+  block do
+    node.set[:python_win32_registered] = true
+    node.save
+  end
+  action :nothing
+end
+
 
