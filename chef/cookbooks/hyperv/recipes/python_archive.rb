@@ -14,21 +14,21 @@ EOH
   not_if {::File.exists?(node[:python][:installed])}
 end
 
-unless node[:python_win32_registered]
-  #Register Python Win32 DLLs
-  windows_batch "register_pywin32" do
-    code <<-EOH
+unless registry_value_exists?("HKEY_LOCAL_MACHINE\\SOFTWARE\\Crowbar", {:name => "PyWin32Registered", :type => :string, :data => 'PyWin32 Registered'}, :machine)
+ #Register Python Win32 DLLs
+ windows_batch "register_pywin32" do
+   code <<-EOH
 #{node[:python][:command]} #{node[:python][:scripts]}\\#{node[:python][:pywin32register]} -install
-    EOH
-  end
+   EOH
+ end
 end
 
-ruby_block "python_win32_registered" do
-  block do
-    node.set[:python_win32_registered] = true
-    node.save
-  end
-  action :nothing
+registry_key "HKEY_LOCAL_MACHINE\\SOFTWARE\\Crowbar" do
+  values [{
+    :name => "PyWin32Registered",
+    :type => :string,
+    :data => 'PyWin32 Registered'
+  }]
+  action :create_if_missing
 end
-
 
