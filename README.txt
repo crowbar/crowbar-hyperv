@@ -12,7 +12,7 @@ A Barclamp is a module component that implements functionality for Crowbar.  Cor
 About this barclamp
 -------------------------------------
 
-This barclamp installs and configures nova-compute and quantum-hyperv-agent services on Hyper-V Server 2012 or Windows Server 2012 hosts.
+This barclamp installs and configures nova-compute and neutron-hyperv-agent services on Hyper-V Server 2012 or Windows Server 2012 hosts.
 
 Legals
 -------------------------------------
