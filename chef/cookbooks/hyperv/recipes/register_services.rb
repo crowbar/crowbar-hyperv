@@ -6,7 +6,7 @@ powershell "register_services" do
     {
       # $secpasswd = ConvertTo-SecureString "crowbar" -AsPlainText -Force
       # $credentials = New-Object System.Management.Automation.PSCredential (".\\Administrator", $secpasswd)
-      New-Service -name "#{node[:service][:nova][:name]}" -binaryPathName "`"#{node[:openstack][:bin]}\\#{node[:service][:file]}`" nova-compute `"#{node[:python][:command]}`" `"#{node[:openstack][:nova][:installed]}`" --config-file `"#{node[:openstack][:config]}\\nova.conf`"" -displayName "#{node[:service][:nova][:displayname]}" -description "#{node[:service][:nova][:description]}" -startupType Automatic
+      New-Service -name "#{node[:service][:nova][:name]}" -binaryPathName "`"#{node[:openstack][:bin]}\\#{node[:service][:file]}`" nova-compute `"#{node[:openstack][:nova][:installed]}`" --config-file `"#{node[:openstack][:config]}\\nova.conf`"" -displayName "#{node[:service][:nova][:displayname]}" -description "#{node[:service][:nova][:description]}" -startupType Automatic
       # -Credential $credentials
       Start-Service "#{node[:service][:nova][:name]}"
     }
