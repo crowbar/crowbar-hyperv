@@ -30,7 +30,7 @@ default[:openstack][:nova][:name] = "nova"
 default[:openstack][:nova][:version] = "2013.1.1"
 default[:openstack][:nova][:file] = "nova-2013.1.1.tar.gz"
 default[:openstack][:nova][:target] = "#{node[:openstack][:location]}"
-default[:openstack][:nova][:installed] = "#{node[:python][:path]}\\Scripts\\nova-compute"
+default[:openstack][:nova][:installed] = "#{node[:python][:path]}\\Scripts\\nova-compute.exe"
 
 default[:openstack][:quantum][:name] = "quantum"
 default[:openstack][:quantum][:version] = "2013.1.1"
