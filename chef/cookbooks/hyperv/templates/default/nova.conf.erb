@@ -30,14 +30,14 @@ rabbit_virtual_host=<%= @rabbit_settings[:vhost] %>
 
 logdir=<%= @openstack_log%>\
 logfile=nova-compute.log
-network_api_class=nova.network.quantumv2.api.API
-quantum_url=<%= @quantum_protocol%>://<%= @quantum_server_host%>:<%= @quantum_server_port%>
-quantum_auth_strategy=keystone
-quantum_admin_tenant_name=<%= @keystone_service_tenant%>
-quantum_admin_username=<%= @quantum_service_user%>
-quantum_admin_password=<%= @quantum_service_password%>
-quantum_admin_auth_url=<%= @keystone_protocol%>://<%= @keystone_host%>:<%= @keystone_admin_port%>/v2.0
-quantum_api_insecure=<%= @quantum_insecure ? 'True' : 'False' %>
+network_api_class=nova.network.neutronv2.api.API
+neutron_url=<%= @neutron_protocol%>://<%= @neutron_server_host%>:<%= @neutron_server_port%>
+neutron_auth_strategy=keystone
+neutron_admin_tenant_name=<%= @keystone_service_tenant%>
+neutron_admin_username=<%= @neutron_service_user%>
+neutron_admin_password=<%= @neutron_service_password%>
+neutron_admin_auth_url=<%= @keystone_protocol%>://<%= @keystone_host%>:<%= @keystone_admin_port%>/v2.0
+neutron_api_insecure=<%= @neutron_insecure ? 'True' : 'False' %>
 [hyperv]
 vswitch_name=vswitch
 limit_cpu_features=false

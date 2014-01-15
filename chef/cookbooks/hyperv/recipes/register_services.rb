@@ -10,13 +10,13 @@ powershell "register_services" do
       # -Credential $credentials
       Start-Service "#{node[:service][:nova][:name]}"
     }
-    if (-not (Get-Service "#{node[:service][:quantum][:name]}" -ErrorAction SilentlyContinue))
+    if (-not (Get-Service "#{node[:service][:neutron][:name]}" -ErrorAction SilentlyContinue))
     {
       # $secpasswd = ConvertTo-SecureString "crowbar" -AsPlainText -Force
       # $credentials = New-Object System.Management.Automation.PSCredential (".\\Administrator", $secpasswd)
-      New-Service -name "#{node[:service][:quantum][:name]}" -binaryPathName "`"#{node[:openstack][:bin]}\\#{node[:service][:file]}`" quantum-hyperv-agent `"#{node[:openstack][:quantum][:installed]}`" --config-file `"#{node[:openstack][:config]}\\quantum_hyperv_agent.conf`"" -displayName "#{node[:service][:quantum][:displayname]}" -description "#{node[:service][:quantum][:description]}" -startupType Automatic
+      New-Service -name "#{node[:service][:neutron][:name]}" -binaryPathName "`"#{node[:openstack][:bin]}\\#{node[:service][:file]}`" neutron-hyperv-agent `"#{node[:openstack][:neutron][:installed]}`" --config-file `"#{node[:openstack][:config]}\\neutron_hyperv_agent.conf`"" -displayName "#{node[:service][:neutron][:displayname]}" -description "#{node[:service][:neutron][:description]}" -startupType Automatic
       # -Credential $credentials
-      Start-Service "#{node[:service][:quantum][:name]}"
+      Start-Service "#{node[:service][:neutron][:name]}"
     }
   EOH
 end
