@@ -115,6 +115,7 @@ template "#{node[:openstack][:config]}\\nova.conf" do
             :cinder_insecure => cinder_insecure,
             :rabbit_settings => rabbit_settings,
             :instances_path => node[:openstack][:instances],
+            :openstack_location => node[:openstack][:location],
             :openstack_config => node[:openstack][:config],
             :openstack_bin => node[:openstack][:bin],
             :openstack_log => node[:openstack][:log]
@@ -127,10 +128,6 @@ template "#{node[:openstack][:config]}\\neutron_hyperv_agent.conf" do
             :rabbit_settings => rabbit_settings,
             :openstack_log => node[:openstack][:log]
            )
-end
-
-cookbook_file "#{node[:openstack][:config]}\\policy.json" do
-  source "policy.json"
 end
 
 cookbook_file "#{node[:openstack][:config]}\\interfaces.template" do
