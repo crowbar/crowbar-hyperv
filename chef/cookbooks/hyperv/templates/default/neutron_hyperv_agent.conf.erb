@@ -8,6 +8,7 @@ rabbit_userid=<%= @rabbit_settings[:user] %>
 rabbit_password=<%= @rabbit_settings[:password] %>
 # the RabbitMQ virtual host (string value)
 rabbit_virtual_host=<%= @rabbit_settings[:vhost] %>
+policy_file=<%= @openstack_location %>\neutron\etc\policy.json
 
 logdir=<%= @openstack_log%>
 logfile=neutron-hyperv-agent.log
