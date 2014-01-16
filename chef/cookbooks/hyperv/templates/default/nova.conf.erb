@@ -12,7 +12,7 @@ instances_path=<%= @instances_path%>
 use_cow_images=true
 force_config_drive=false
 injected_network_template=<%= @openstack_config%>\interfaces.template
-policy_file=<%= @openstack_config%>\policy.json
+policy_file=<%= @openstack_location %>\nova\etc\nova\policy.json
 mkisofs_cmd=<%= @openstack_bin%>\mkisofs.exe
 verbose=true
 allow_resize_to_same_host=true
