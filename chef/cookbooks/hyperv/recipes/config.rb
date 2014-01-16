@@ -126,6 +126,7 @@ template "#{node[:openstack][:config]}\\neutron_hyperv_agent.conf" do
   source "neutron_hyperv_agent.conf.erb"
   variables(
             :rabbit_settings => rabbit_settings,
+            :openstack_location => node[:openstack][:location],
             :openstack_log => node[:openstack][:log]
            )
 end
