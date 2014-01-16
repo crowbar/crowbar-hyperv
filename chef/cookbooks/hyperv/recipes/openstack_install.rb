@@ -55,6 +55,6 @@ windows_batch "install_neutron" do
   cd #{node[:openstack][:neutron][:name]}
   #{node[:python][:command]} setup.py install --force
   EOH
-  # not_if {::File.exists?("#{node[:openstack][:neutron][:installed]}")}
+  not_if {::File.exists?("#{node[:openstack][:neutron][:installed]}")}
 end
 
