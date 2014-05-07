@@ -2,11 +2,31 @@
 # Windows features required:
 #
 
-default[:features_list][:hyperv] = ["Microsoft-Hyper-V", "Microsoft-Hyper-V-Management-PowerShell"]
-default[:features_list][:management] = ["Remote-Desktop-Services"]
-default[:features_list][:iscsi_target] = ["File-Services", "CoreFileServer"]
+default[:features_list][:hyperv] = {
+  "Microsoft-Hyper-V" => {
+    "restart" => false
+  },
+  "Microsoft-Hyper-V-Management-PowerShell" => {
+    "restart" => true
+  }
+}
 
-default[:features_list][:windows] = default[:features_list][:management] + default[:features_list][:hyperv] + default[:features_list][:iscsi_target]
+default[:features_list][:management] = {
+  "Remote-Desktop-Services" => {
+    "restart" => false
+  }
+}
+
+default[:features_list][:iscsi_target] = {
+  "File-Services" => {
+    "restart" => false
+  },
+  "CoreFileServer" => {
+    "restart" => false
+  }
+}
+
+default[:features_list][:windows] = default[:features_list][:management].merge(default[:features_list][:hyperv].merge(default[:features_list][:iscsi_target]))
 
 default[:sevenzip][:location] = "#{Chef::Config[:file_cache_path]}/"
 default[:sevenzip][:file] = "7z922-x64.msi"
