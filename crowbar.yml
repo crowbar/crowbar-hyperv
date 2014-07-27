@@ -37,7 +37,10 @@ barclamp:
   # section, Crowbar will assume the barclamp works on all the operating
   # systems it supports.  
   os_support:
+    - windows-6.3
     - windows-6.2
+    - hyperv-6.3
+    - hyperv-6.2
 
 crowbar:
   layout: 1
