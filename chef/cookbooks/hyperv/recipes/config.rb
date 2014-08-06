@@ -7,10 +7,8 @@ if rabbits.length > 0
 else
   rabbit = node
 end
-rabbit_address = Chef::Recipe::Barclamp::Inventory.get_network_by_type(rabbit, "admin").address
-Chef::Log.info("Rabbit server found at #{rabbit_address}")
 rabbit_settings = {
-  :address => rabbit_address,
+  :address => rabbit[:rabbitmq][:address],
   :port => rabbit[:rabbitmq][:port],
   :user => rabbit[:rabbitmq][:user],
   :password => rabbit[:rabbitmq][:password],
