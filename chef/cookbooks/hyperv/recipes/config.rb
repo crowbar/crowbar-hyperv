@@ -119,7 +119,8 @@ template "#{node[:openstack][:config]}\\nova.conf" do
 end
 
 vlan_start = node[:network][:networks][:nova_fixed][:vlan]
-vlan_end = vlan_start + 2000
+num_vlans = neutron_server[:neutron][:num_vlans]
+vlan_end = [vlan_start + num_vlans - 1, 4094].min
 
 template "#{node[:openstack][:config]}\\neutron_hyperv_agent.conf" do
   source "neutron_hyperv_agent.conf.erb"
