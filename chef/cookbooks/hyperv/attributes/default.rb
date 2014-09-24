@@ -21,8 +21,8 @@ default[:python][:path] = 'C:\Python27'
 default[:python][:scripts] = 'C:\Python27\Scripts'
 
 default[:python][:archive] = 'python275.zip'
-default[:python][:installed] = "#{node[:python][:sitepackages]}\\greenlet.pyd"
 default[:python][:pywin32register] = 'pywin32_postinstall.py'
+default[:python][:installed] = "#{node[:python][:scripts]}\\#{node[:python][:pywin32register]}"
 
 default[:openstack][:location] = 'C:\OpenStack'
 
@@ -45,7 +45,7 @@ default[:openstack][:log] = "C:\\OpenStack\\log"
 
 default[:service][:file] = "OpenStackService.exe"
 default[:service][:nova][:name] = "nova-compute"
-default[:service][:nova][:displayname] = "Openstack Nova Compute Service" 
+default[:service][:nova][:displayname] = "Openstack Nova Compute Service"
 default[:service][:nova][:description] = "Service Wrapper for Openstack Nova Compute - Manages the Openstack Nova Compute as a Windows Service"
 default[:service][:neutron][:name] = "neutron-hyperv-agent"
 default[:service][:neutron][:displayname] = "OpenStack Neutron Hyper-V Agent Service"
