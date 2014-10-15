@@ -63,18 +63,14 @@ if neutron_servers.length > 0
   neutron_insecure = neutron_protocol == 'https' && neutron_server[:neutron][:ssl][:insecure]
   neutron_service_user = neutron_server[:neutron][:service_user]
   neutron_service_password = neutron_server[:neutron][:service_password]
-  if neutron_server[:neutron][:networking_mode] != 'local'
-    per_tenant_vlan=true
-  else
-    per_tenant_vlan=false
-  end
-  neutron_networking_plugin = neutron_server[:neutron][:networking_plugin]
   neutron_networking_mode = neutron_server[:neutron][:networking_mode]
+  neutron_networking_plugin = neutron_server[:neutron][:networking_plugin]
 else
   neutron_server_host = nil
   neutron_server_port = nil
   neutron_service_user = nil
   neutron_service_password = nil
+  neutron_networking_mode = "local"
 end
 Chef::Log.info("Neutron server at #{neutron_server_host}")
 
@@ -120,12 +116,19 @@ template "#{node[:openstack][:config]}\\nova.conf" do
            )
 end
 
+vlan_start = node[:network][:networks][:nova_fixed][:vlan]
+num_vlans = neutron_server[:neutron][:num_vlans]
+vlan_end = [vlan_start + num_vlans - 1, 4094].min
+
 template "#{node[:openstack][:config]}\\neutron_hyperv_agent.conf" do
   source "neutron_hyperv_agent.conf.erb"
   variables(
             :rabbit_settings => rabbit_settings,
             :openstack_location => node[:openstack][:location],
-            :openstack_log => node[:openstack][:log]
+            :openstack_log => node[:openstack][:log],
+            :networking_mode => neutron_networking_mode,
+            :vlan_start => vlan_start,
+            :vlan_end => vlan_end
            )
 end
 
