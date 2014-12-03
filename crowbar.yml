@@ -15,27 +15,13 @@
 #
 
 barclamp:
-  name: hyperv
-  display: Hyper-V
+  name: 'hyperv'
+  display: 'Hyper-V'
   description: 'OpenStack Compute for Hyper-V on Windows Server 2012'
-  proposal_schema_version: 1
-  # controlls if barclamp is shown in UI list (true=yes)
   user_managed: false
   version: 0
-  # Requires allows you to declare that this barclamp relies on
-  # another barclamp to provide some of its functionality.
-  # All barclamps implicitly rely on the crowbar barclamp.
   requires:
     - '@crowbar'
-  # Member allows you to declare that this barclamp is a member
-  # of a group of related barclamp.  A barclamp can be a member of 
-  # muliple groups, and a group name can be used instead of a barclamp
-  # in a requires: clause by prefixing it with an @ sign. 
-  member:
-  # Os_support allows you to declare that this barclamp only supports
-  # specific operating systems.  If you don't have an os_support
-  # section, Crowbar will assume the barclamp works on all the operating
-  # systems it supports.  
   os_support:
     - windows-6.3
     - windows-6.2
@@ -47,4 +33,4 @@ crowbar:
   order: 1000
   run_order: 1000
   chef_order: 1000
-  proposal_schema_version: 2
+  proposal_schema_version: 3
