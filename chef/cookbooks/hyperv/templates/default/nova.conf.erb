@@ -33,10 +33,10 @@ logfile=nova-compute.log
 network_api_class=nova.network.neutronv2.api.API
 neutron_url=<%= @neutron_protocol%>://<%= @neutron_server_host%>:<%= @neutron_server_port%>
 neutron_auth_strategy=keystone
-neutron_admin_tenant_name=<%= @keystone_service_tenant%>
+neutron_admin_tenant_name=<%= @keystone_settings['service_tenant'] %>
 neutron_admin_username=<%= @neutron_service_user%>
 neutron_admin_password=<%= @neutron_service_password%>
-neutron_admin_auth_url=<%= @keystone_protocol%>://<%= @keystone_host%>:<%= @keystone_admin_port%>/v2.0
+neutron_admin_auth_url=<%= @keystone_settings['internal_auth_url'] %>
 neutron_api_insecure=<%= @neutron_insecure ? 'True' : 'False' %>
 [hyperv]
 vswitch_name=vswitch

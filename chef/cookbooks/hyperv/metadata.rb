@@ -9,6 +9,7 @@ supports         "windows"
 
 depends          "windows"
 depends          "powershell"
-#depends          "keystone"
+depends          "crowbar-openstack"
+depends          "keystone"
 #depends          "neutron"
 #depends          "glance"

@@ -1,20 +1,5 @@
 raise if not node[:platform] == 'windows'
 
-rabbits = search(:node, "roles:rabbitmq-server")
-if rabbits.length > 0
-  rabbit = rabbits[0]
-  rabbit = node if rabbit.name == node.name
-else
-  rabbit = node
-end
-rabbit_settings = {
-  :address => rabbit[:rabbitmq][:address],
-  :port => rabbit[:rabbitmq][:port],
-  :user => rabbit[:rabbitmq][:user],
-  :password => rabbit[:rabbitmq][:password],
-  :vhost => rabbit[:rabbitmq][:vhost]
-}
-
 glance_servers = search(:node, "roles:glance-server")
 if glance_servers.length > 0
   glance_server = glance_servers[0]
@@ -31,19 +16,7 @@ else
 end
 Chef::Log.info("Glance server at #{glance_server_host}")
 
-keystones = search(:node, "recipes:keystone\\:\\:server")
-if keystones.length > 0
-  keystone = keystones[0]
-  keystone = node if keystone.name == node.name
-else
-  keystone = node
-end
-
-keystone_host = keystone[:fqdn]
-keystone_protocol = keystone["keystone"]["api"]["protocol"]
-keystone_admin_port = keystone["keystone"]["api"]["admin_port"]
-keystone_service_tenant = keystone["keystone"]["service"]["tenant"]
-Chef::Log.info("Keystone server found at #{keystone_host}")
+keystone_settings = KeystoneHelper.keystone_settings(node, :nova)
 
 cinder_servers = search(:node, "roles:cinder-controller") || []
 if cinder_servers.length > 0
@@ -102,12 +75,9 @@ template "#{node[:openstack][:config]}\\nova.conf" do
             :neutron_service_user => neutron_service_user,
             :neutron_service_password => neutron_service_password,
             :neutron_networking_plugin => neutron_networking_plugin,
-            :keystone_service_tenant => keystone_service_tenant,
-            :keystone_protocol => keystone_protocol,
-            :keystone_host => keystone_host,
-            :keystone_admin_port => keystone_admin_port,
+            :keystone_settings => keystone_settings,
             :cinder_insecure => cinder_insecure,
-            :rabbit_settings => rabbit_settings,
+            :rabbit_settings => fetch_rabbitmq_settings("nova"),
             :instances_path => node[:openstack][:instances],
             :openstack_location => node[:openstack][:location],
             :openstack_config => node[:openstack][:config],
@@ -123,7 +93,7 @@ vlan_end = [vlan_start + num_vlans - 1, 4094].min
 template "#{node[:openstack][:config]}\\neutron_hyperv_agent.conf" do
   source "neutron_hyperv_agent.conf.erb"
   variables(
-            :rabbit_settings => rabbit_settings,
+            :rabbit_settings => fetch_rabbitmq_settings("nova"),
             :openstack_location => node[:openstack][:location],
             :openstack_log => node[:openstack][:log],
             :networking_mode => neutron_networking_mode,
