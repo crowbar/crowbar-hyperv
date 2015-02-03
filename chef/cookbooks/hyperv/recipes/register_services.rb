@@ -25,3 +25,14 @@ powershell "register_services" do
   EOH
 end
 
+service "nova-compute" do
+  service_name node[:service][:nova][:name]
+  action [:enable, :start]
+  subscribes :restart, "template[#{node[:openstack][:config].gsub(/\\/, "/")}/nova.conf]"
+end
+
+service "neutron-hyperv-agent" do
+  service_name node[:service][:neutron][:name]
+  action [:enable, :start]
+  subscribes :restart, "template[#{node[:openstack][:config].gsub(/\\/, "/")}/neutron_hyperv_agent.conf]"
+end
