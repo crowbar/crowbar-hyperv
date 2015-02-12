@@ -15,6 +15,7 @@ if !node[:windows_features_installed]
   node[:features_list][:windows].each do |feature_list|
     windows_feature feature_list do
       action :install
+      all true
     end
   end
 
