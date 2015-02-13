@@ -36,14 +36,15 @@ if neutron_servers.length > 0
   neutron_insecure = neutron_protocol == 'https' && neutron_server[:neutron][:ssl][:insecure]
   neutron_service_user = neutron_server[:neutron][:service_user]
   neutron_service_password = neutron_server[:neutron][:service_password]
-  neutron_networking_mode = neutron_server[:neutron][:networking_mode]
   neutron_networking_plugin = neutron_server[:neutron][:networking_plugin]
+  neutron_ml2_type_drivers = neutron[:neutron][:ml2_type_drivers]
 else
   neutron_server_host = nil
   neutron_server_port = nil
   neutron_service_user = nil
   neutron_service_password = nil
-  neutron_networking_mode = "local"
+  neutron_networking_plugin = "ml2"
+  neutron_ml2_type_drivers = []
 end
 Chef::Log.info("Neutron server at #{neutron_server_host}")
 
@@ -98,7 +99,8 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/neutron_hyperv_agent.conf
             :rabbit_settings => fetch_rabbitmq_settings("nova"),
             :openstack_location => node[:openstack][:location],
             :openstack_log => node[:openstack][:log],
-            :networking_mode => neutron_networking_mode,
+            :neutron_networking_pugin => neutron_networking_plugin,
+            :neutron_ml2_type_drivers => neutron_ml2_type_drivers,
             :vlan_start => vlan_start,
             :vlan_end => vlan_end
            )
