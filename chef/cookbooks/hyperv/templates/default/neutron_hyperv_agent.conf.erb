@@ -33,15 +33,17 @@ logfile=neutron-hyperv-agent.log
 #
 # network_vlan_ranges =
 # Example: network_vlan_ranges = physnet1:1000:2999
-<% if @networking_mode == 'vlan' -%>
+<% if @neutron_networking_plugin == 'ml2' -%>
+<% if @neutron_ml2_type_drivers.include?('vlan') -%>
 tenant_network_type = vlan
 network_vlan_ranges = physnet1:<%= @vlan_start %>:<%= @vlan_end %>
-<% elsif @networking_mode == 'flat' -%>
+<% elsif @neutron_ml2_type_drivers.include?('flat') -%>
 tenant_network_type = flat
 network_vlan_ranges = physnet1
 <% else -%>
 tenant_network_type = local
 network_vlan_ranges = physnet1
+<% end -%>
 <% end -%>
 
 [AGENT]
