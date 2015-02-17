@@ -37,7 +37,7 @@ if neutron_servers.length > 0
   neutron_service_user = neutron_server[:neutron][:service_user]
   neutron_service_password = neutron_server[:neutron][:service_password]
   neutron_networking_plugin = neutron_server[:neutron][:networking_plugin]
-  neutron_ml2_type_drivers = neutron[:neutron][:ml2_type_drivers]
+  neutron_ml2_type_drivers = neutron_server[:neutron][:ml2_type_drivers]
 else
   neutron_server_host = nil
   neutron_server_port = nil
