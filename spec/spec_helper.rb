@@ -15,15 +15,31 @@
 # limitations under the License.
 #
 
-require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec)
+require "simplecov"
 
-task :syntaxcheck do
-  system('for f in `find -name \*.rb`; do echo -n "Syntaxcheck $f: "; ruby -c $f || exit $? ; done')
-  exit $?.exitstatus
+if ENV["CODECLIMATE_REPO_TOKEN"]
+  require "coveralls"
+  require "codeclimate-test-reporter"
+
+  Coveralls.wear!
+  CodeClimate::TestReporter.start
+
+  SimpleCov.start do
+    add_filter "/spec"
+
+    formatter SimpleCov::Formatter::MultiFormatter[
+      SimpleCov::Formatter::HTMLFormatter,
+      CodeClimate::TestReporter::Formatter
+    ]
+  end
+else
+  SimpleCov.start do
+    add_filter "/spec"
+  end
 end
 
-task :default => [
-  :spec,
-  :syntaxcheck
-]
+require "rspec"
+
+RSpec.configure do |config|
+  config.mock_with :rspec
+end

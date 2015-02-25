@@ -15,15 +15,18 @@
 # limitations under the License.
 #
 
-require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec)
+source 'https://rubygems.org'
 
-task :syntaxcheck do
-  system('for f in `find -name \*.rb`; do echo -n "Syntaxcheck $f: "; ruby -c $f || exit $? ; done')
-  exit $?.exitstatus
+group :development do
+  gem 'rake', '~> 10.4.2'
+  gem 'rspec', '~> 3.1.0'
 end
 
-task :default => [
-  :spec,
-  :syntaxcheck
-]
+group :test do
+  gem 'simplecov', require: false
+
+  if ENV['CODECLIMATE_REPO_TOKEN']
+    gem 'coveralls', require: false
+    gem 'codeclimate-test-reporter', require: false
+  end
+end
