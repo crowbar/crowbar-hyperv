@@ -99,7 +99,7 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/neutron_hyperv_agent.conf
             :rabbit_settings => fetch_rabbitmq_settings("nova"),
             :openstack_location => node[:openstack][:location],
             :openstack_log => node[:openstack][:log],
-            :neutron_networking_pugin => neutron_networking_plugin,
+            :neutron_networking_plugin => neutron_networking_plugin,
             :neutron_ml2_type_drivers => neutron_ml2_type_drivers,
             :vlan_start => vlan_start,
             :vlan_end => vlan_end
