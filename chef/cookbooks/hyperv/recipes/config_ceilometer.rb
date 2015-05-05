@@ -17,14 +17,14 @@ if node[:ceilometer][:use_mongodb]
       ## This will fail on windows, we need to find something better here
       mongodb_servers = db_hosts.map {|s| "#{Chef::Recipe::Barclamp::Inventory.get_network_by_type(s, "admin").address}:#{s[:ceilometer][:mongodb][:port]}"}
       db_connection = "mongodb://#{mongodb_servers.sort.join(',')}/ceilometer?replicaSet=#{node[:ceilometer][:ha][:mongodb][:replica_set][:name]}"
-#    end
+    end
   end
 
   # if this is a cluster, but the replica set member attribute hasn't
   # been set on any node (yet), we just fallback to using the first
   # ceilometer-server node
   if db_connection.nil?
-    db_hosts = search_env_filtered(:node, "roles:ceilometer-server")
+    db_hosts = search(:node, "roles:ceilometer-server")
     db_host = db_hosts.first || node
     ## This will fail on windows
     mongodb_ip = Chef::Recipe::Barclamp::Inventory.get_network_by_type(db_host, "admin").address
@@ -38,16 +38,10 @@ else
   include_recipe "#{db_settings[:backend_name]}::python-client"
 
   db_password = ''
-  if node.roles.include? "ceilometer-server"
-    # password is already created because common recipe comes
-    # after the server recipe
-    db_password = node[:ceilometer][:db][:password]
-  else
-    # pickup password to database from ceilometer-server node
-    node_controllers = search(:node, "roles:ceilometer-server") || []
-    if node_controllers.length > 0
-      db_password = node_controllers[0][:ceilometer][:db][:password]
-    end
+  # pickup password to database from ceilometer-server node
+  node_controllers = search(:node, "roles:ceilometer-server") || []
+  if node_controllers.length > 0
+    db_password = node_controllers[0][:ceilometer][:db][:password]
   end
 
   db_connection = "#{db_settings[:url_scheme]}://#{node[:ceilometer][:db][:user]}:#{db_password}@#{db_settings[:address]}/#{node[:ceilometer][:db][:database]}"
@@ -60,9 +54,9 @@ if time_to_live > 0
   time_to_live = time_to_live * 3600 * 24
 end
 
-is_compute_agent = node.roles.include?("ceilometer-agent") && node.roles.any?{|role| /^nova-multi-compute-/ =~ role}
+is_compute_agent = %w(ceilometer-agent-hyperv nova-multi-compute-hyperv).all?{|role| node.roles.include?(role)}
 
-dirs = [ node[:openstack][:ceilometer][:lock_path], node[:openstack][:ceilometer][:log_dir], node[:openstack][:ceilometer][:signing_dir] ]
+dirs = [ node[:openstack][:ceilometer][:lock_path], node[:openstack][:ceilometer][:signing_dir] ]
 dirs.each do |dir|
   directory dir do
     action :create
@@ -81,14 +75,13 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/ceilometer.conf" do
       :bind_port => bind_port,
       :metering_secret => node[:ceilometer][:metering_secret],
       :database_connection => db_connection,
-#      :database_connection => "mongodb://192.168.1.82:27017/ceilometer",
       :node_hostname => node['hostname'],
       :hypervisor_inspector => "hyperv",
       :libvirt_type => "",
       :time_to_live => time_to_live,
       :alarm_threshold_evaluation_interval => node[:ceilometer][:alarm_threshold_evaluation_interval],
       :lock_path => node[:openstack][:ceilometer][:lock_path],
-      :log_dir =>  node[:openstack][:ceilometer][:log_dir],
+      :log_dir =>  node[:openstack][:log],
       :signing_dir => node[:openstack][:ceilometer][:signing_dir]
     )
     if is_compute_agent
@@ -96,6 +89,9 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/ceilometer.conf" do
     end
 end
 
+# Chef 11.4 fails to notify if the path separator is windows like,
+# according to https://tickets.opscode.com/browse/CHEF-4082 using gsub
+# to replace the windows path separator to linux one
 template "#{node[:openstack][:config].gsub(/\\/, "/")}/pipeline.yaml" do
   source "pipeline.yaml.erb"
   variables({

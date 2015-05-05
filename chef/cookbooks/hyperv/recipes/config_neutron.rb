@@ -24,27 +24,13 @@ else
 end
 Chef::Log.info("Neutron server at #{neutron_server_host}")
 
-dirs = [ node[:openstack][:instances], node[:openstack][:config], node[:openstack][:bin], node[:openstack][:log] ]
-dirs.each do |dir|
-  directory dir do
-    action :create
-    recursive true
-  end
-end
-
-%w{ OpenStackService.exe mkisofs.exe mkisofs_license.txt qemu-img.exe intl.dll libglib-2.0-0.dll libssp-0.dll zlib1.dll }.each do |bin_file|
-  cookbook_file "#{node[:openstack][:bin]}/#{bin_file}" do
-    source bin_file
-  end
-end
-
-# Chef 11.4 fails to notify if the path separator is windows like, according to https://tickets.opscode.com/browse/CHEF-4082
-# using gsub to replace the windows path separator to linux one
-
 vlan_start = node[:network][:networks][:nova_fixed][:vlan]
 num_vlans = neutron_server[:neutron][:num_vlans]
 vlan_end = [vlan_start + num_vlans - 1, 4094].min
 
+# Chef 11.4 fails to notify if the path separator is windows like,
+# according to https://tickets.opscode.com/browse/CHEF-4082 using gsub
+# to replace the windows path separator to linux one
 template "#{node[:openstack][:config].gsub(/\\/, "/")}/neutron_hyperv_agent.conf" do
   source "neutron_hyperv_agent.conf.erb"
   variables(

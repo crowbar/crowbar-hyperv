@@ -37,33 +37,24 @@ if neutron_servers.length > 0
   neutron_service_user = neutron_server[:neutron][:service_user]
   neutron_service_password = neutron_server[:neutron][:service_password]
   neutron_networking_plugin = neutron_server[:neutron][:networking_plugin]
-  neutron_ml2_type_drivers = neutron_server[:neutron][:ml2_type_drivers]
 else
   neutron_server_host = nil
   neutron_server_port = nil
   neutron_service_user = nil
   neutron_service_password = nil
   neutron_networking_plugin = "ml2"
-  neutron_ml2_type_drivers = []
 end
 Chef::Log.info("Neutron server at #{neutron_server_host}")
 
-dirs = [ node[:openstack][:instances], node[:openstack][:config], node[:openstack][:bin], node[:openstack][:log] ]
-dirs.each do |dir|
-  directory dir do
-    action :create
-    recursive true
-  end
-end
-
-%w{ OpenStackService.exe mkisofs.exe mkisofs_license.txt qemu-img.exe intl.dll libglib-2.0-0.dll libssp-0.dll zlib1.dll }.each do |bin_file|
+%w{ mkisofs.exe mkisofs_license.txt qemu-img.exe intl.dll libglib-2.0-0.dll libssp-0.dll zlib1.dll }.each do |bin_file|
   cookbook_file "#{node[:openstack][:bin]}/#{bin_file}" do
     source bin_file
   end
 end
 
-# Chef 11.4 fails to notify if the path separator is windows like, according to https://tickets.opscode.com/browse/CHEF-4082
-# using gsub to replace the windows path separator to linux one
+# Chef 11.4 fails to notify if the path separator is windows like,
+# according to https://tickets.opscode.com/browse/CHEF-4082 using gsub
+# to replace the windows path separator to linux one
 template "#{node[:openstack][:config].gsub(/\\/, "/")}/nova.conf" do
   source "nova.conf.erb"
   variables(
@@ -88,25 +79,3 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/nova.conf" do
             :openstack_log => node[:openstack][:log]
            )
 end
-
-vlan_start = node[:network][:networks][:nova_fixed][:vlan]
-num_vlans = neutron_server[:neutron][:num_vlans]
-vlan_end = [vlan_start + num_vlans - 1, 4094].min
-
-template "#{node[:openstack][:config].gsub(/\\/, "/")}/neutron_hyperv_agent.conf" do
-  source "neutron_hyperv_agent.conf.erb"
-  variables(
-            :rabbit_settings => fetch_rabbitmq_settings("nova"),
-            :openstack_location => node[:openstack][:location],
-            :openstack_log => node[:openstack][:log],
-            :neutron_networking_plugin => neutron_networking_plugin,
-            :neutron_ml2_type_drivers => neutron_ml2_type_drivers,
-            :vlan_start => vlan_start,
-            :vlan_end => vlan_end
-           )
-end
-
-cookbook_file "#{node[:openstack][:config]}/interfaces.template" do
-  source "interfaces.template"
-end
-
