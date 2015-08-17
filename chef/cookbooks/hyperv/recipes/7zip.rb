@@ -1,4 +1,4 @@
-raise if not node[:platform] == 'windows'
+raise if not node[:platform] == "windows"
 
 cookbook_file "#{node[:cache_location]}#{node[:sevenzip][:file]}" do
   source node[:sevenzip][:file]

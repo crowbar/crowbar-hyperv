@@ -18,15 +18,15 @@
 # limitations under the License.
 #
 
-remote_directory node['chef_handler']['handler_path'] do
-  source 'handlers'
+remote_directory node["chef_handler"]["handler_path"] do
+  source "handlers"
   recursive true
   action :create
 end
 
-chef_handler 'WindowsRebootHandler' do
+chef_handler "WindowsRebootHandler" do
   source "#{node['chef_handler']['handler_path']}/windows_reboot_handler.rb"
-  arguments node['windows']['allow_pending_reboots']
-  supports :report => true, :exception => false
+  arguments node["windows"]["allow_pending_reboots"]
+  supports report: true, exception: false
   action :enable
 end

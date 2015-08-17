@@ -8,9 +8,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-require 'tempfile'
-require 'chef/resource/execute'
+require "tempfile"
+require "chef/resource/execute"
 
 action :run do
   begin
@@ -54,7 +54,7 @@ def set_owner_and_group
 end
 
 def script_file
-  @script_file ||= Tempfile.open(['chef-script', '.bat'])
+  @script_file ||= Tempfile.open(["chef-script", ".bat"])
 end
 
 def unlink_script_file

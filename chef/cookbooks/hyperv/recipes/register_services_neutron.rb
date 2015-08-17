@@ -1,4 +1,4 @@
-raise if not node[:platform] == 'windows'
+raise if not node[:platform] == "windows"
 
 powershell "register_services" do
   code <<-EOH

@@ -82,7 +82,7 @@ def execute
 end
 
 def script_file
-  @script_file ||= Tempfile.open(['chef-script', '.ps1'])
+  @script_file ||= Tempfile.open(["chef-script", ".ps1"])
 end
 
 def unlink_script_file
@@ -96,7 +96,7 @@ end
 # did not support the 'environment' attribute.
 def create_env_wrapper(command, environment)
   if environment
-    env_string = environment.map{ |k,v| "$env:#{k}='#{v}'" }.join('; ')
+    env_string = environment.map{ |k,v| "$env:#{k}='#{v}'" }.join("; ")
     "& { #{env_string}; #{command} }"
   else
     command

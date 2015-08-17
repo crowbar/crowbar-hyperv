@@ -23,7 +23,7 @@
 # PowerShell 2.0 Download Page
 # http://support.microsoft.com/kb/968929/en-us
 
-case node['platform']
+case node["platform"]
 when "windows"
 
   unless powershell_installed?
@@ -41,7 +41,7 @@ when "windows"
     elsif (win_version.windows_server_2008? || win_version.windows_server_2003_r2? ||
             win_version.windows_server_2003? || win_version.windows_xp?)
 
-      if node['kernel']['machine'] =~ /x86_64/
+      if node["kernel"]["machine"] =~ /x86_64/
         dot_net_2_url = "http://download.microsoft.com/download/9/8/6/98610406-c2b7-45a4-bdc3-9db1b1c5f7e2/NetFx20SP1_x64.exe"
         dot_net_2_checksum  = "1731e53de5f48baae0963677257660df1329549e81c48b4d7db7f7f3f2329aab"
       else
@@ -58,8 +58,8 @@ when "windows"
       end
 
       windows_package "Windows Management Framework Core" do
-        source node['powershell']['url']
-        checksum node['powershell']['checksum']
+        source node["powershell"]["url"]
+        checksum node["powershell"]["checksum"]
         installer_type :custom
         options "/quiet /norestart"
         action :install
@@ -72,5 +72,5 @@ when "windows"
     Chef::Log.info("PowerShell 2.0 is already installed/enabled.")
   end
 else
-  Chef::Log.warn('PowerShell 2.0 can only be installed on the Windows platform.')
+  Chef::Log.warn("PowerShell 2.0 can only be installed on the Windows platform.")
 end

@@ -1,5 +1,4 @@
-raise if not node[:platform] == 'windows'
-
+raise if not node[:platform] == "windows"
 
 powershell "configure_networking" do
   code <<-EOH
@@ -11,7 +10,7 @@ powershell "configure_networking" do
   {
     foreach ($VSwitch in $VSwitchList)
     {
-      if ($VSwitch.Name -eq "vswitch") {$SwitchConfigured = $true} 
+      if ($VSwitch.Name -eq "vswitch") {$SwitchConfigured = $true}
     }
   }
   if ($SwitchConfigured -ne $true)

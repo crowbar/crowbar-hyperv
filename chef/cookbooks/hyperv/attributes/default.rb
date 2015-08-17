@@ -7,13 +7,13 @@ default[:features_list][:hyperv] = {
     "restart" => false
   },
   "RSAT-Hyper-V-Tools-Feature" => {
-    "restart" => false,
+    "restart" => false
   },
   "Microsoft-Hyper-V-Management-Clients" => {
-    "restart" => false,
+    "restart" => false
   },
   "Microsoft-Hyper-V-Management-Powershell" => {
-    "restart" => true,
+    "restart" => true
   }
 }
 
@@ -46,8 +46,8 @@ default[:python][:sitepackages] = 'C:\Python27\lib\site-packages'
 default[:python][:path] = 'C:\Python27'
 default[:python][:scripts] = 'C:\Python27\Scripts'
 
-default[:python][:archive] = 'python275.zip'
-default[:python][:pywin32register] = 'pywin32_postinstall.py'
+default[:python][:archive] = "python275.zip"
+default[:python][:pywin32register] = "pywin32_postinstall.py"
 default[:python][:installed] = "#{node[:python][:scripts]}\\#{node[:python][:pywin32register]}"
 
 default[:openstack][:location] = 'C:\OpenStack'

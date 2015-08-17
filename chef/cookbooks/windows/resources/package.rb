@@ -22,14 +22,14 @@ actions :install, :remove
 
 default_action :install
 
-attribute :package_name, :kind_of => String, :name_attribute => true
-attribute :source, :kind_of => String, :required => true
-attribute :version, :kind_of => String
-attribute :options, :kind_of => String
-attribute :installer_type, :kind_of => Symbol, :default => nil, :equal_to => [:msi, :inno, :nsis, :wise, :installshield, :custom]
-attribute :checksum, :kind_of => String
-attribute :timeout, :kind_of => Integer, :default => 600
-attribute :success_codes, :kind_of => Array, :default => [0, 42, 127]
+attribute :package_name, kind_of: String, name_attribute: true
+attribute :source, kind_of: String, required: true
+attribute :version, kind_of: String
+attribute :options, kind_of: String
+attribute :installer_type, kind_of: Symbol, default: nil, equal_to: [:msi, :inno, :nsis, :wise, :installshield, :custom]
+attribute :checksum, kind_of: String
+attribute :timeout, kind_of: Integer, default: 600
+attribute :success_codes, kind_of: Array, default: [0, 42, 127]
 
 # TODO
 

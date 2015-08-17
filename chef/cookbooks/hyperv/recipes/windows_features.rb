@@ -1,4 +1,4 @@
-raise if not node[:platform] == 'windows'
+raise if not node[:platform] == "windows"
 
 node.default[:windows][:allow_pending_reboots] = false
 
@@ -17,7 +17,7 @@ if node[:target_platform] !~ /^hyperv/
       restart feature_attrs["restart"] || false
     end
 
-    ruby_block 'set_windows_features_install_flag' do
+    ruby_block "set_windows_features_install_flag" do
       block do
         node.set[:windows_features_installed].push feature_name
         node.save

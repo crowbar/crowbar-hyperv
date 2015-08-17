@@ -53,7 +53,6 @@ def load_current_resource
   end
 end
 
-
 private
 
 PRINTERS_REG_KEY = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Print\Printers\\'.freeze unless defined?(PRINTERS_REG_KEY)

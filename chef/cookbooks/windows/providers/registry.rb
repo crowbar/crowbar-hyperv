@@ -33,7 +33,7 @@ action :modify do
 end
 
 action :force_modify do
-  require 'timeout'
+  require "timeout"
   Timeout.timeout(120) do
     @new_resource.values.each do |value_name, value_data|
       i = 1

@@ -21,10 +21,10 @@
 #
 
 if RUBY_PLATFORM =~ /mswin|mingw32|windows/
-  require 'windows/error'
-  require 'windows/registry'
-  require 'windows/process'
-  require 'windows/security'
+  require "windows/error"
+  require "windows/registry"
+  require "windows/process"
+  require "windows/security"
 end
 
 #helpers for Windows API calls that require privilege adjustments
@@ -61,12 +61,12 @@ class Chef
     end
 
     def run(*privileges)
-      token = [0].pack('L')
+      token = [0].pack("L")
 
       unless OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES|TOKEN_QUERY, token)
         raise get_last_error
       end
-      token = token.unpack('L')[0]
+      token = token.unpack("L")[0]
 
       privileges.each do |name|
         unless adjust_privilege(token, name, SE_PRIVILEGE_ENABLED)
@@ -84,9 +84,9 @@ class Chef
     end
 
     def adjust_privilege(token, priv, attr=0)
-      luid = [0,0].pack('Ll')
+      luid = [0,0].pack("Ll")
       if LookupPrivilegeValue(nil, priv, luid)
-        new_state = [1, luid.unpack('Ll'), attr].flatten.pack('LLlL')
+        new_state = [1, luid.unpack("Ll"), attr].flatten.pack("LLlL")
         AdjustTokenPrivileges(token, 0, new_state, new_state.size, 0, 0)
       end
     end

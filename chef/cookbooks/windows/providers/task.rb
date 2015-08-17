@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'chef/mixin/shell_out'
+require "chef/mixin/shell_out"
 include Chef::Mixin::ShellOut
 
 action :create do
@@ -34,7 +34,7 @@ action :create do
       Chef::Log.fatal "#{@new_resource.name}: Can't specify user or password without both!"
     end
     cmd += "/RL HIGHEST " if @new_resource.run_level == :highest
-    shell_out!(cmd, {:returns => [0]})
+    shell_out!(cmd, {returns: [0]})
     @new_resource.updated_by_last_action true
     Chef::Log.info "#{@new_resource} task created"
   end
@@ -46,7 +46,7 @@ action :run do
       Chef::Log.info "#{@new_resource} task is currently running, skipping run"
     else
       cmd = "schtasks /Run /TN \"#{@current_resource.name}\""
-      shell_out!(cmd, {:returns => [0]})
+      shell_out!(cmd, {returns: [0]})
       @new_resource.updated_by_last_action true
       Chef::Log.info "#{@new_resource} task ran"
     end
@@ -64,7 +64,7 @@ action :change do
     elsif (@new_resource.user and !@new_resource.password) || (@new_resource.password and !@new_resource.user)
       Chef::Log.fatal "#{@new_resource.name}: Can't specify user or password without both!"
     end
-    shell_out!(cmd, {:returns => [0]})
+    shell_out!(cmd, {returns: [0]})
     @new_resource.updated_by_last_action true
     Chef::Log.info "Change #{@new_resource} task ran"
   else
@@ -75,7 +75,7 @@ end
 action :delete do
   if @current_resource.exists
     cmd = "schtasks /Delete /TN \"#{@current_resource.name}\""
-    shell_out!(cmd, {:returns => [0]})
+    shell_out!(cmd, {returns: [0]})
     @new_resource.updated_by_last_action true
     Chef::Log.info "#{@new_resource} task deleted"
   else

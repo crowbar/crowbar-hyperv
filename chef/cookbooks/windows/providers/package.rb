@@ -19,11 +19,11 @@
 #
 
 if RUBY_PLATFORM =~ /mswin|mingw32|windows/
-  require 'win32/registry'
+  require "win32/registry"
 end
 
-require 'chef/mixin/shell_out'
-require 'chef/mixin/language'
+require "chef/mixin/shell_out"
+require "chef/mixin/language"
 
 include Chef::Mixin::ShellOut
 include Windows::Helper
@@ -112,7 +112,7 @@ end
 
 def candidate_version
   @candidate_version ||= begin
-    @new_resource.version || 'latest'
+    @new_resource.version || "latest"
   end
 end
 
@@ -121,7 +121,7 @@ def install_package(name,version)
   install_args = [cached_file(@new_resource.source, @new_resource.checksum), expand_options(unattended_installation_flags), expand_options(@new_resource.options)]
   Chef::Log.info("Starting installation...this could take awhile.")
   Chef::Log.debug "Install command: #{ sprintf(install_command_template, *install_args) }"
-  shell_out!(sprintf(install_command_template, *install_args), {:timeout => @new_resource.timeout, :returns => @new_resource.success_codes})
+  shell_out!(sprintf(install_command_template, *install_args), {timeout: @new_resource.timeout, returns: @new_resource.success_codes})
 end
 
 def remove_package(name, version)
@@ -131,12 +131,12 @@ def remove_package(name, version)
     if uninstall_string =~ /msiexec/i
       "#{uninstall_string} /qn"
     else
-      uninstall_string.gsub!('"','')
+      uninstall_string.gsub!('"',"")
       "start \"\" /wait /d\"#{::File.dirname(uninstall_string)}\" #{::File.basename(uninstall_string)}#{expand_options(@new_resource.options)} /S"
     end
   end
   Chef::Log.info("Removing #{@new_resource} with uninstall command '#{uninstall_command}'")
-  shell_out!(uninstall_command, {:returns => @new_resource.success_codes})
+  shell_out!(uninstall_command, {returns: @new_resource.success_codes})
 end
 
 private
@@ -207,9 +207,9 @@ def extract_installed_packages_from_key(hkey = ::Win32::Registry::HKEY_LOCAL_MAC
           version = k["DisplayVersion"] rescue "NO VERSION"
           uninstall_string = k["UninstallString"] rescue nil
           if display_name
-            packages[display_name] = {:name => display_name,
-                                      :version => version,
-                                      :uninstall_string => uninstall_string}
+            packages[display_name] = {name: display_name,
+                                      version: version,
+                                      uninstall_string: uninstall_string}
           end
         rescue ::Win32::Registry::Error
         end
@@ -230,7 +230,7 @@ def installer_type
         :msi
       else
         # search the binary file for installer type
-        contents = ::Kernel.open(::File.expand_path(cached_file(@new_resource.source)), "rb") {|io| io.read } # TODO limit data read in
+        contents = ::Kernel.open(::File.expand_path(cached_file(@new_resource.source)), "rb") { |io| io.read } # TODO limit data read in
         case contents
         when /inno/i # Inno Setup
           :inno

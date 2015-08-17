@@ -1,4 +1,4 @@
-raise if not node[:platform] == 'windows'
+raise if not node[:platform] == "windows"
 
 include_recipe "hyperv::windows_features"
 include_recipe "hyperv::setup_networking"

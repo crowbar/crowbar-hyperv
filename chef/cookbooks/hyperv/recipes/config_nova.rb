@@ -1,4 +1,4 @@
-raise if not node[:platform] == 'windows'
+raise if not node[:platform] == "windows"
 
 glance_servers = search(:node, "roles:glance-server")
 if glance_servers.length > 0
@@ -7,7 +7,7 @@ if glance_servers.length > 0
   glance_server_host = CrowbarHelper.get_host_for_admin_url(glance_server, (glance_server[:glance][:ha][:enabled] rescue false))
   glance_server_port = glance_server[:glance][:api][:bind_port]
   glance_server_protocol = glance_server[:glance][:api][:protocol]
-  glance_server_insecure = glance_server_protocol == 'https' && glance_server[:glance][:ssl][:insecure]
+  glance_server_insecure = glance_server_protocol == "https" && glance_server[:glance][:ssl][:insecure]
 else
   glance_server_host = nil
   glance_server_port = nil
@@ -21,7 +21,7 @@ keystone_settings = KeystoneHelper.keystone_settings(node, :nova)
 cinder_servers = search(:node, "roles:cinder-controller") || []
 if cinder_servers.length > 0
   cinder_server = cinder_servers[0]
-  cinder_insecure = cinder_server[:cinder][:api][:protocol] == 'https' && cinder_server[:cinder][:ssl][:insecure]
+  cinder_insecure = cinder_server[:cinder][:api][:protocol] == "https" && cinder_server[:cinder][:ssl][:insecure]
 else
   cinder_insecure = false
 end
@@ -33,7 +33,7 @@ if neutron_servers.length > 0
   neutron_protocol = neutron_server[:neutron][:api][:protocol]
   neutron_server_host = CrowbarHelper.get_host_for_admin_url(neutron_server, (neutron_server[:neutron][:ha][:server][:enabled] rescue false))
   neutron_server_port = neutron_server[:neutron][:api][:service_port]
-  neutron_insecure = neutron_protocol == 'https' && neutron_server[:neutron][:ssl][:insecure]
+  neutron_insecure = neutron_protocol == "https" && neutron_server[:neutron][:ssl][:insecure]
   neutron_service_user = neutron_server[:neutron][:service_user]
   neutron_service_password = neutron_server[:neutron][:service_password]
   neutron_networking_plugin = neutron_server[:neutron][:networking_plugin]
@@ -58,24 +58,24 @@ end
 template "#{node[:openstack][:config].gsub(/\\/, "/")}/nova.conf" do
   source "nova.conf.erb"
   variables(
-            :glance_server_protocol => glance_server_protocol,
-            :glance_server_host => glance_server_host,
-            :glance_server_port => glance_server_port,
-            :glance_server_insecure => glance_server_insecure,
-            :neutron_protocol => neutron_protocol,
-            :neutron_server_host => neutron_server_host,
-            :neutron_server_port => neutron_server_port,
-            :neutron_insecure => neutron_insecure,
-            :neutron_service_user => neutron_service_user,
-            :neutron_service_password => neutron_service_password,
-            :neutron_networking_plugin => neutron_networking_plugin,
-            :keystone_settings => keystone_settings,
-            :cinder_insecure => cinder_insecure,
-            :rabbit_settings => fetch_rabbitmq_settings("nova"),
-            :instances_path => node[:openstack][:instances],
-            :openstack_location => node[:openstack][:location],
-            :openstack_config => node[:openstack][:config],
-            :openstack_bin => node[:openstack][:bin],
-            :openstack_log => node[:openstack][:log]
+            glance_server_protocol: glance_server_protocol,
+            glance_server_host: glance_server_host,
+            glance_server_port: glance_server_port,
+            glance_server_insecure: glance_server_insecure,
+            neutron_protocol: neutron_protocol,
+            neutron_server_host: neutron_server_host,
+            neutron_server_port: neutron_server_port,
+            neutron_insecure: neutron_insecure,
+            neutron_service_user: neutron_service_user,
+            neutron_service_password: neutron_service_password,
+            neutron_networking_plugin: neutron_networking_plugin,
+            keystone_settings: keystone_settings,
+            cinder_insecure: cinder_insecure,
+            rabbit_settings: fetch_rabbitmq_settings("nova"),
+            instances_path: node[:openstack][:instances],
+            openstack_location: node[:openstack][:location],
+            openstack_config: node[:openstack][:config],
+            openstack_bin: node[:openstack][:bin],
+            openstack_log: node[:openstack][:log]
            )
 end

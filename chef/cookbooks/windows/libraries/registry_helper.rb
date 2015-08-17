@@ -23,14 +23,14 @@
 #
 
 if RUBY_PLATFORM =~ /mswin|mingw32|windows/
-  require 'win32/registry'
-  require 'ruby-wmi'
+  require "win32/registry"
+  require "ruby-wmi"
 end
 
 module Windows
   module RegistryHelper
 
-    @@native_registry_constant = ENV['PROCESSOR_ARCHITEW6432'] == 'AMD64' ? 0x0100 : 0x0200
+    @@native_registry_constant = ENV["PROCESSOR_ARCHITEW6432"] == "AMD64" ? 0x0100 : 0x0200
 
     def get_hive_name(path)
       Chef::Log.debug("Resolving registry shortcuts to full names")
@@ -65,7 +65,6 @@ module Windows
       unless hive
         Chef::Application.fatal!("Unsupported registry hive '#{hive_name}'")
       end
-
 
       Chef::Log.debug("Registry hive resolved to #{hkey}")
       return hive
@@ -105,19 +104,19 @@ module Windows
           end
           if cur_val != val
             Chef::Log.debug("setting #{key}=#{val}")
-            
+
             if type.nil?
               type = :string
             end
 
             reg_type = {
-              :binary => ::Win32::Registry::REG_BINARY,
-              :string => ::Win32::Registry::REG_SZ,
-              :multi_string => ::Win32::Registry::REG_MULTI_SZ,
-              :expand_string => ::Win32::Registry::REG_EXPAND_SZ,
-              :dword => ::Win32::Registry::REG_DWORD,
-              :dword_big_endian => ::Win32::Registry::REG_DWORD_BIG_ENDIAN,
-              :qword => ::Win32::Registry::REG_QWORD
+              binary: ::Win32::Registry::REG_BINARY,
+              string: ::Win32::Registry::REG_SZ,
+              multi_string: ::Win32::Registry::REG_MULTI_SZ,
+              expand_string: ::Win32::Registry::REG_EXPAND_SZ,
+              dword: ::Win32::Registry::REG_DWORD,
+              dword_big_endian: ::Win32::Registry::REG_DWORD_BIG_ENDIAN,
+              qword: ::Win32::Registry::REG_QWORD
             }[type]
 
             reg.write(key, reg_type, val)
@@ -243,7 +242,7 @@ module Windows
       reg_key = "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList\\#{sid}"
       Chef::Log.debug("Looking for profile at #{reg_key}")
       if key_exists?(reg_key)
-        return get_value(reg_key,'ProfileImagePath')
+        return get_value(reg_key,"ProfileImagePath")
       else
         return nil
       end
@@ -252,7 +251,7 @@ module Windows
 
     def resolve_user_to_sid(username)
       begin
-        sid = WMI::Win32_UserAccount.find(:first, :conditions => {:name => username}).sid
+        sid = WMI::Win32_UserAccount.find(:first, conditions: {name: username}).sid
         Chef::Log.debug("Resolved user SID to #{sid}")
         return sid
       rescue

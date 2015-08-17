@@ -22,7 +22,7 @@
 
 include Windows::Helper
 
-require 'find'
+require "find"
 
 action :unzip do
   ensure_rubyzip_gem_installed
@@ -66,7 +66,7 @@ action :zip do
         # don't add root directory to the zipfile.
         next if f == @new_resource.source
         # strip the root directory from the filename before adding it to the zipfile.
-        zip_fname = f.sub(@new_resource.source, '')
+        zip_fname = f.sub(@new_resource.source, "")
         Chef::Log.debug("adding #{zip_fname} to archive, sourcefile is: #{f}")
         z.add(zip_fname, f)
       end
@@ -80,12 +80,12 @@ end
 private
 def ensure_rubyzip_gem_installed
   begin
-    require 'zip/zip'
+    require "zip/zip"
   rescue LoadError
     Chef::Log.info("Missing gem 'rubyzip'...installing now.")
     chef_gem "rubyzip" do
-      version node['windows']['rubyzipversion']
+      version node["windows"]["rubyzipversion"]
     end
-    require 'zip/zip'
+    require "zip/zip"
   end
 end

@@ -21,7 +21,7 @@
 # gems with precompiled binaries
 %w{ win32-api win32-service }.each do |win_gem|
   chef_gem win_gem do
-    options '--platform=mswin32'
+    options "--platform=mswin32"
     action :install
   end
 end

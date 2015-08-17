@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-require 'uri'
+require "uri"
 
 module Windows
   module Helper
@@ -51,7 +51,7 @@ module Windows
     # is used for installation
     def value_for_feature_provider(provider_hash)
       p = Chef::Platform.find_provider_for_node(node, :windows_feature)
-      key = p.to_s.downcase.split('::').last
+      key = p.to_s.downcase.split("::").last
       provider_hash[key] || provider_hash[key.to_sym]
     end
 

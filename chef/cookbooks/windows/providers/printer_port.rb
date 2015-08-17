@@ -55,7 +55,6 @@ def load_current_resource
   end
 end
 
-
 private
 
 PORTS_REG_KEY = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Print\Monitors\Standard TCP/IP Port\Ports\\'.freeze unless defined?(PORTS_REG_KEY)
@@ -66,7 +65,6 @@ def port_exists?(name)
   Chef::Log.debug "Checking to see if this reg key exists: '#{ port_reg_key }'"
   Registry.key_exists?(port_reg_key)
 end
-
 
 def create_printer_port
 

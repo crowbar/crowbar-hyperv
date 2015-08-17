@@ -22,21 +22,21 @@
 # and not very useful
 actions :create, :delete, :run, :change
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :command, :kind_of => String
-attribute :cwd, :kind_of => String
-attribute :user, :kind_of => String, :default => nil
-attribute :password, :kind_of => String, :default => nil
-attribute :run_level, :equal_to => [:highest, :limited], :default => :limited
-attribute :frequency_modifier, :kind_of => Integer, :default => 1
-attribute :frequency, :equal_to => [:minute,
+attribute :name, kind_of: String, name_attribute: true
+attribute :command, kind_of: String
+attribute :cwd, kind_of: String
+attribute :user, kind_of: String, default: nil
+attribute :password, kind_of: String, default: nil
+attribute :run_level, equal_to: [:highest, :limited], default: :limited
+attribute :frequency_modifier, kind_of: Integer, default: 1
+attribute :frequency, equal_to: [:minute,
                                     :hourly,
                                     :daily,
                                     :weekly,
                                     :monthly,
                                     :once,
                                     :on_logon,
-                                    :on_idle], :default => :hourly
+                                    :on_idle], default: :hourly
 
 attr_accessor :exists, :status
 

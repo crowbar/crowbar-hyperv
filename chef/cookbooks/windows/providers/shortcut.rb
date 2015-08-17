@@ -19,7 +19,7 @@
 #
 
 def load_current_resource
-  require 'win32ole'
+  require "win32ole"
 
   @link = WIN32OLE.new("WScript.Shell").CreateShortcut(@new_resource.name)
 
