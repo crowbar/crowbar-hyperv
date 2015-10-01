@@ -20,7 +20,7 @@
 
 default["chef_handler"]["root_user"] = "root"
 
-case platform
+case platform_family
 when "openbsd", "freebsd", "mac_os_x", "mac_os_x_server"
   default["chef_handler"]["root_group"] = "wheel"
 else

@@ -1,4 +1,4 @@
-raise if not node[:platform] == "windows"
+raise if not node[:platform_family] == "windows"
 
 include_recipe "hyperv::openstack_install_ceilometer"
 include_recipe "hyperv::config_common_openstack"

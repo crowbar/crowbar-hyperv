@@ -23,7 +23,7 @@
 # PowerShell 2.0 Download Page
 # http://support.microsoft.com/kb/968929/en-us
 
-case node["platform"]
+case node[:platform_family]
 when "windows"
 
   unless powershell_installed?

@@ -1,4 +1,4 @@
-raise if not node[:platform] == "windows"
+raise if not node[:platform_family] == "windows"
 
 # install Python 2.7.5
 

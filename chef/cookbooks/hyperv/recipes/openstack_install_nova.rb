@@ -1,4 +1,4 @@
-raise if not node[:platform] == "windows"
+raise if not node[:platform_family] == "windows"
 
 cookbook_file "#{node[:cache_location]}#{node[:openstack][:nova][:file]}" do
   source node[:openstack][:nova][:file]
