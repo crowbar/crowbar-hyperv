@@ -1,4 +1,4 @@
-raise if not node[:platform] == "windows"
+raise if not node[:platform_family] == "windows"
 
 glance_servers = search(:node, "roles:glance-server")
 if glance_servers.length > 0
