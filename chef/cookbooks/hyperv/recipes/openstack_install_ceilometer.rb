@@ -24,3 +24,10 @@ powershell "install_ceilometer" do
   EOH
   not_if { ::File.exists?("#{node[:openstack][:ceilometer][:installed]}") }
 end
+
+utils_line "ensure correct python path in shebang in ceilometer" do
+  file "#{node[:python][:scripts]}\\#{node[:service][:ceilometer][:name]}-script.py"
+  regexp /\A#!.*/
+  replace "#! #{node[:python][:command]}"
+  action :replace
+end

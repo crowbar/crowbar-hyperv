@@ -2,7 +2,7 @@ raise if not node[:platform_family] == "windows"
 
 cookbook_file "#{node[:cache_location]}#{node[:openstack][:nova][:file]}" do
   source node[:openstack][:nova][:file]
-  not_if { ::File.exists?(node[:openstack][:nova][:installed]) }
+  not_if { ::File.exist?(node[:openstack][:nova][:installed]) }
 end
 
 windows_batch "unzip_nova" do
@@ -23,4 +23,11 @@ powershell "install_nova" do
   #{node[:python][:command]} setup.py install
   EOH
   not_if { ::File.exists?("#{node[:openstack][:nova][:installed]}") }
+end
+
+utils_line "ensure correct python path in shebang in nova" do
+  file "#{node[:python][:scripts]}\\#{node[:service][:nova][:name]}-script.py"
+  regexp /\A#!.*/
+  replace "#! #{node[:python][:command]}"
+  action :replace
 end
