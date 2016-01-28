@@ -12,7 +12,7 @@ windows_batch "unzip_nova" do
   rmdir /S /Q #{node[:openstack][:location]}\\dist
   ren #{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}-#{node[:openstack][:nova][:version]} #{node[:openstack][:nova][:name]}
   EOH
-  not_if { ::File.exists?("#{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}") }
+  not_if { ::File.exist?("#{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}") }
 end
 
 powershell "install_nova" do
@@ -22,5 +22,5 @@ powershell "install_nova" do
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
   EOH
-  not_if { ::File.exists?("#{node[:openstack][:nova][:installed]}") }
+  not_if { ::File.exist?(node[:openstack][:nova][:installed]) }
 end

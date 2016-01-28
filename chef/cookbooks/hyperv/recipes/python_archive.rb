@@ -3,7 +3,7 @@ raise if not node[:platform_family] == "windows"
 #Fetch and extract the packaged Python 2.7.5 archive
 cookbook_file "#{node[:cache_location]}#{node[:python][:archive]}" do
   source node[:python][:archive]
-  not_if { ::File.exists?(node[:python][:archive]) }
+  not_if { ::File.exist?(node[:python][:archive]) }
 end
 
 #Extract the packaged Python 2.7.5 archive
@@ -11,7 +11,7 @@ windows_batch "unzip_python275" do
   code <<-EOH
 #{node[:sevenzip][:command]} x #{node[:cache_location]}#{node[:python][:archive]} -o#{node[:python][:path]} -r -y
 EOH
-  not_if { ::File.exists?(node[:python][:installed]) }
+  not_if { ::File.exist?(node[:python][:installed]) }
 end
 
 unless registry_value_exists?("HKEY_LOCAL_MACHINE\\SOFTWARE\\Crowbar", {name: "PyWin32Registered", type: :string, data: "PyWin32 Registered"}, :machine)

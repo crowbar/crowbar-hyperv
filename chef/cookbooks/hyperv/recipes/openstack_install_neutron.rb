@@ -12,7 +12,7 @@ windows_batch "unzip_neutron" do
   rmdir /S /Q #{node[:openstack][:location]}\\dist
   ren #{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}-#{node[:openstack][:neutron][:version]} #{node[:openstack][:neutron][:name]}
   EOH
-  not_if { ::File.exists?("#{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}") }
+  not_if { ::File.exist?("#{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}") }
 end
 
 powershell "install_neutron" do
@@ -22,6 +22,6 @@ powershell "install_neutron" do
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
   EOH
-  not_if { ::File.exists?("#{node[:openstack][:neutron][:installed]}") }
+  not_if { ::File.exist?(node[:openstack][:neutron][:installed]) }
 end
 
