@@ -1,9 +1,14 @@
 raise unless node[:platform_family] == "windows"
 
+installed_file = "#{node[:openstack][:location]}\\installed-#{node[:openstack][:nova][:name]}"
+if File.exist? installed_file
+  Chef::Log.info("#{node[:openstack][:nova][:name]} files already installed")
+  return
+end
+
 cached_file = "#{node[:cache_location]}#{node[:openstack][:nova][:file]}" do
 cookbook_file cached_file do
   source node[:openstack][:nova][:file]
-  not_if { ::File.exist?(node[:openstack][:nova][:installed]) }
 end
 
 windows_batch "unzip_nova" do
@@ -23,7 +28,6 @@ powershell "install_nova" do
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
   EOH
-  not_if { ::File.exist?(node[:openstack][:nova][:installed]) }
 end
 
 utils_line "ensure correct python path in shebang in nova" do
@@ -31,4 +35,8 @@ utils_line "ensure correct python path in shebang in nova" do
   regexp /\A#!.*/
   replace "#! #{node[:python][:command]}"
   action :replace
+end
+
+file installed_file do
+  action :create
 end

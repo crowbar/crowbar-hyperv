@@ -1,9 +1,14 @@
 raise unless node[:platform_family] == "windows"
 
+installed_file = "#{node[:openstack][:location]}\\installed-#{node[:openstack][:ceilometer][:name]}"
+if File.exist? installed_file
+  Chef::Log.info("#{node[:openstack][:ceilometer][:name]} files already installed")
+  return
+end
+
 cached_file = "#{node[:cache_location]}#{node[:openstack][:ceilometer][:file]}"
 cookbook_file cached_file do
   source node[:openstack][:ceilometer][:file]
-  not_if { ::File.exist?(node[:openstack][:ceilometer][:installed]) }
 end
 
 windows_batch "unzip_ceilometer" do
@@ -23,7 +28,6 @@ powershell "install_ceilometer" do
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
   EOH
-  not_if { ::File.exist?(node[:openstack][:ceilometer][:installed]) }
 end
 
 utils_line "ensure correct python path in shebang in ceilometer" do
@@ -31,4 +35,8 @@ utils_line "ensure correct python path in shebang in ceilometer" do
   regexp /\A#!.*/
   replace "#! #{node[:python][:command]}"
   action :replace
+end
+
+file installed_file do
+  action :create
 end

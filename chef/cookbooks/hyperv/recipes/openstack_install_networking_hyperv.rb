@@ -1,5 +1,11 @@
 raise unless node[:platform_family] == "windows"
 
+installed_file = "#{node[:openstack][:location]}\\installed-#{node[:openstack][:networking_hyperv][:name]}"
+if File.exist? installed_file
+  Chef::Log.info("#{node[:openstack][:networking_hyperv][:name]} files already installed")
+  return
+end
+
 cached_file = "#{node[:cache_location]}#{node[:openstack][:networking_hyperv][:file]}"
 cookbook_file cached_file do
   source node[:openstack][:networking_hyperv][:file]
@@ -23,5 +29,8 @@ powershell "install_networking_hyperv" do
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
   EOH
-  not_if { ::File.exist?("#{node[:openstack][:networking_hyperv][:installed]}") }
+end
+
+file installed_file do
+  action :create
 end
