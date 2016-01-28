@@ -17,12 +17,12 @@ end
 
 windows_batch "unzip #{component}" do
   code <<-EOH
+  rmdir /S /Q #{node[:openstack][:location]}\\#{component}
   #{node[:sevenzip][:command]} x #{cached_file} -o#{node[:openstack][:location]} -r -y
   #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{component}-#{node[:openstack][:tarball_branch]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
   ren #{node[:openstack][:location]}\\#{component}-* #{component}
   EOH
-  not_if { ::File.exist?("#{node[:openstack][:location]}\\#{component}") }
 end
 
 powershell "install #{component}" do
