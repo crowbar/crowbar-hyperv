@@ -1,4 +1,4 @@
-raise if not node[:platform_family] == "windows"
+raise unless node[:platform_family] == "windows"
 
 # Create common directories
 dirs = [node[:openstack][:instances], node[:openstack][:config], node[:openstack][:bin], node[:openstack][:log]]

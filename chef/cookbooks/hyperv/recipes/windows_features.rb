@@ -1,4 +1,4 @@
-raise if not node[:platform_family] == "windows"
+raise unless node[:platform_family] == "windows"
 
 node.default[:windows][:allow_pending_reboots] = false
 

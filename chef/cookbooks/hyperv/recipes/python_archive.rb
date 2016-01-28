@@ -1,4 +1,4 @@
-raise if not node[:platform_family] == "windows"
+raise unless node[:platform_family] == "windows"
 
 #Fetch and extract the packaged Python 2.7.5 archive
 cookbook_file "#{node[:cache_location]}#{node[:python][:archive]}" do

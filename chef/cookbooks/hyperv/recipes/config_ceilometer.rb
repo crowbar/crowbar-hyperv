@@ -1,4 +1,4 @@
-raise if not node[:platform_family] == "windows"
+raise unless node[:platform_family] == "windows"
 
 keystone_settings = KeystoneHelper.keystone_settings(node, :ceilometer)
 

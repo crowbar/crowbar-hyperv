@@ -1,4 +1,4 @@
-raise if not node[:platform_family] == "windows"
+raise unless node[:platform_family] == "windows"
 
 include_recipe "hyperv::openstack_install_neutron"
 include_recipe "hyperv::openstack_install_nova"
