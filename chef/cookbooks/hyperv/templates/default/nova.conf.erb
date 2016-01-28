@@ -45,6 +45,7 @@ region_name=<%= @keystone_settings['endpoint_region'] %>
 host = <%= @glance_server_host %>
 port = <%= @glance_server_port %>
 protocol = <%= @glance_server_protocol %>
+api_insecure = <%= @glance_server_insecure ? 'True' : 'False' %>
 
 [hyperv]
 vswitch_name=vswitch
