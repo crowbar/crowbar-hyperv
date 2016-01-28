@@ -39,10 +39,10 @@ of a package.
 In case of manual installation from git, you can download the files manually. For instance:
 
 ```
-wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/nova/nova-12.0.0.tar.gz
-wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/neutron/neutron-7.0.0.tar.gz
+wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/nova/nova-stable-liberty.tar.gz
+wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/neutron/neutron-stable-liberty.tar.gz
 wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/networking-hyperv/networking-hyperv-stable-liberty.tar.gz
-wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/ceilometer/ceilometer-5.0.0.tar.gz
+wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/ceilometer/ceilometer-stable-liberty.tar.gz
 ```
 
 Note that the versions are the ones used in the hyperv cookbook at the time of writing.

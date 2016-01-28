@@ -14,9 +14,9 @@ end
 windows_batch "unzip_nova" do
   code <<-EOH
   #{node[:sevenzip][:command]} x #{cached_file} -o#{node[:openstack][:location]} -r -y
-  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:nova][:name]}-#{node[:openstack][:nova][:version]}.tar -o#{node[:openstack][:location]} -r -y
+  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:nova][:name]}-#{node[:openstack][:tarball_branch]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
-  ren #{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}-#{node[:openstack][:nova][:version]} #{node[:openstack][:nova][:name]}
+  ren #{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}-* #{node[:openstack][:nova][:name]}
   EOH
   not_if { ::File.exist?("#{node[:openstack][:location]}\\#{node[:openstack][:nova][:name]}") }
 end

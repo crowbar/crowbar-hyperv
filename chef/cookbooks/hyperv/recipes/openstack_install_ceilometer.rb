@@ -14,9 +14,9 @@ end
 windows_batch "unzip_ceilometer" do
   code <<-EOH
   #{node[:sevenzip][:command]} x #{cached_file]} -o#{node[:openstack][:location]} -r -y
-  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:ceilometer][:name]}-#{node[:openstack][:ceilometer][:version]}.tar -o#{node[:openstack][:location]} -r -y
+  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:ceilometer][:name]}-#{node[:openstack][:tarball_branch]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
-  ren #{node[:openstack][:location]}\\#{node[:openstack][:ceilometer][:name]}-#{node[:openstack][:ceilometer][:version]} #{node[:openstack][:ceilometer][:name]}
+  ren #{node[:openstack][:location]}\\#{node[:openstack][:ceilometer][:name]}-* #{node[:openstack][:ceilometer][:name]}
   EOH
   not_if { ::File.exist?("#{node[:openstack][:location]}\\#{node[:openstack][:ceilometer][:name]}") }
 end

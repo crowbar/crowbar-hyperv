@@ -51,25 +51,22 @@ default[:python][:pywin32register] = "pywin32_postinstall.py"
 default[:python][:installed] = "#{node[:python][:scripts]}\\#{node[:python][:pywin32register]}"
 
 default[:openstack][:location] = 'C:\OpenStack'
+default[:openstack][:tarball_branch] = 'stable-liberty'
 
 default[:openstack][:nova][:name] = "nova"
-default[:openstack][:nova][:version] = "12.0.0"
-default[:openstack][:nova][:file] = "nova-12.0.0.tar.gz"
+default[:openstack][:nova][:file] = "nova-stable-liberty.tar.gz"
 default[:openstack][:nova][:target] = "#{node[:openstack][:location]}"
 
 default[:openstack][:neutron][:name] = "neutron"
-default[:openstack][:neutron][:version] = "7.0.0"
-default[:openstack][:neutron][:file] = "neutron-7.0.0.tar.gz"
+default[:openstack][:neutron][:file] = "neutron-stable-liberty.tar.gz"
 default[:openstack][:neutron][:target] = "#{node[:openstack][:location]}"
 
 default[:openstack][:networking_hyperv][:name] = "networking-hyperv"
-default[:openstack][:networking_hyperv][:version] = "2015.1.1.dev36"
 default[:openstack][:networking_hyperv][:file] = "networking-hyperv-stable-liberty.tar.gz"
 default[:openstack][:networking_hyperv][:target] = "#{node[:openstack][:location]}"
 
 default[:openstack][:ceilometer][:name] = "ceilometer"
-default[:openstack][:ceilometer][:version] = "5.0.0"
-default[:openstack][:ceilometer][:file] = "ceilometer-5.0.0.tar.gz"
+default[:openstack][:ceilometer][:file] = "ceilometer-stable-liberty.tar.gz"
 default[:openstack][:ceilometer][:target] = "#{node[:openstack][:location]}"
 default[:openstack][:ceilometer][:lock_path] = "C:\\OpenStack\\var\\run\\"
 default[:openstack][:ceilometer][:signing_dir] = "C:\\OpenStack\\var\\cache\\ceilometer\\keystone-signing\\"

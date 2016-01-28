@@ -14,9 +14,9 @@ end
 windows_batch "unzip_neutron" do
   code <<-EOH
   #{node[:sevenzip][:command]} x #{cached_file} -o#{node[:openstack][:location]} -r -y
-  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:neutron][:name]}-#{node[:openstack][:neutron][:version]}.tar -o#{node[:openstack][:location]} -r -y
+  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:neutron][:name]}-#{node[:openstack][:tarball_branch]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
-  ren #{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}-#{node[:openstack][:neutron][:version]} #{node[:openstack][:neutron][:name]}
+  ren #{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}-* #{node[:openstack][:neutron][:name]}
   EOH
   not_if { ::File.exist?("#{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}") }
 end
