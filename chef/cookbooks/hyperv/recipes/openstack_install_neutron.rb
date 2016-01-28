@@ -1,13 +1,14 @@
 raise unless node[:platform_family] == "windows"
 
-cookbook_file "#{node[:cache_location]}#{node[:openstack][:neutron][:file]}" do
+cached_file = "#{node[:cache_location]}#{node[:openstack][:neutron][:file]}" do
+cookbook_file cached_file do
   source node[:openstack][:neutron][:file]
   not_if { ::File.exist?(node[:openstack][:neutron][:installed]) }
 end
 
 windows_batch "unzip_neutron" do
   code <<-EOH
-  #{node[:sevenzip][:command]} x #{node[:cache_location]}#{node[:openstack][:neutron][:file]} -o#{node[:openstack][:location]} -r -y
+  #{node[:sevenzip][:command]} x #{cached_file} -o#{node[:openstack][:location]} -r -y
   #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:neutron][:name]}-#{node[:openstack][:neutron][:version]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
   ren #{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}-#{node[:openstack][:neutron][:version]} #{node[:openstack][:neutron][:name]}

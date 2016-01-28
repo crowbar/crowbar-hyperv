@@ -1,13 +1,14 @@
 raise unless node[:platform_family] == "windows"
 
-cookbook_file "#{node[:cache_location]}#{node[:openstack][:ceilometer][:file]}" do
+cached_file = "#{node[:cache_location]}#{node[:openstack][:ceilometer][:file]}"
+cookbook_file cached_file do
   source node[:openstack][:ceilometer][:file]
   not_if { ::File.exist?(node[:openstack][:ceilometer][:installed]) }
 end
 
 windows_batch "unzip_ceilometer" do
   code <<-EOH
-  #{node[:sevenzip][:command]} x #{node[:cache_location]}#{node[:openstack][:ceilometer][:file]} -o#{node[:openstack][:location]} -r -y
+  #{node[:sevenzip][:command]} x #{cached_file]} -o#{node[:openstack][:location]} -r -y
   #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:ceilometer][:name]}-#{node[:openstack][:ceilometer][:version]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
   ren #{node[:openstack][:location]}\\#{node[:openstack][:ceilometer][:name]}-#{node[:openstack][:ceilometer][:version]} #{node[:openstack][:ceilometer][:name]}
