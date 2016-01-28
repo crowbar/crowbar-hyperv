@@ -54,16 +54,12 @@ default[:openstack][:location] = 'C:\OpenStack'
 default[:openstack][:tarball_branch] = 'stable-liberty'
 
 default[:openstack][:nova][:name] = "nova"
-default[:openstack][:nova][:target] = "#{node[:openstack][:location]}"
 
 default[:openstack][:neutron][:name] = "neutron"
-default[:openstack][:neutron][:target] = "#{node[:openstack][:location]}"
 
 default[:openstack][:networking_hyperv][:name] = "networking-hyperv"
-default[:openstack][:networking_hyperv][:target] = "#{node[:openstack][:location]}"
 
 default[:openstack][:ceilometer][:name] = "ceilometer"
-default[:openstack][:ceilometer][:target] = "#{node[:openstack][:location]}"
 default[:openstack][:ceilometer][:lock_path] = "C:\\OpenStack\\var\\run\\"
 default[:openstack][:ceilometer][:signing_dir] = "C:\\OpenStack\\var\\cache\\ceilometer\\keystone-signing\\"
 
