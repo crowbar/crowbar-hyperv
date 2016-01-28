@@ -1,37 +1,41 @@
 raise unless node[:platform_family] == "windows"
 
-installed_file = "#{node[:openstack][:location]}\\installed-#{node[:openstack][:neutron][:name]}"
+component = node[:openstack][:neutron][:name]
+service = node[:service][:neutron][:name]
+
+installed_file = "#{node[:openstack][:location]}\\installed-#{component}"
 if File.exist? installed_file
-  Chef::Log.info("#{node[:openstack][:neutron][:name]} files already installed")
+  Chef::Log.info("#{component} files already installed")
   return
 end
 
-cached_file = "#{node[:cache_location]}#{node[:openstack][:neutron][:file]}" do
+tarball = "#{component}-#{node[:openstack][:tarball_branch]}.tar.gz"
+cached_file = "#{node[:cache_location]}#{tarball}"
 cookbook_file cached_file do
-  source node[:openstack][:neutron][:file]
+  source tarball
 end
 
-windows_batch "unzip_neutron" do
+windows_batch "unzip #{component}" do
   code <<-EOH
   #{node[:sevenzip][:command]} x #{cached_file} -o#{node[:openstack][:location]} -r -y
-  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:neutron][:name]}-#{node[:openstack][:tarball_branch]}.tar -o#{node[:openstack][:location]} -r -y
+  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{component}-#{node[:openstack][:tarball_branch]}.tar -o#{node[:openstack][:location]} -r -y
   rmdir /S /Q #{node[:openstack][:location]}\\dist
-  ren #{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}-* #{node[:openstack][:neutron][:name]}
+  ren #{node[:openstack][:location]}\\#{component}-* #{component}
   EOH
-  not_if { ::File.exist?("#{node[:openstack][:location]}\\#{node[:openstack][:neutron][:name]}") }
+  not_if { ::File.exist?("#{node[:openstack][:location]}\\#{component}") }
 end
 
-powershell "install_neutron" do
+powershell "install #{component}" do
   code <<-EOH
   cd #{node[:openstack][:location]}
-  cd #{node[:openstack][:neutron][:name]}
+  cd #{component}
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
   EOH
 end
 
-utils_line "ensure correct python path in shebang in neutron" do
-  file "#{node[:python][:scripts]}\\#{node[:service][:neutron][:name]}-script.py"
+utils_line "ensure correct python path in shebang in #{component}" do
+  file "#{node[:python][:scripts]}\\#{service}-script.py"
   regexp /\A#!.*/
   replace "#! #{node[:python][:command]}"
   action :replace
