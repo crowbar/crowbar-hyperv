@@ -30,12 +30,21 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o
 specific language governing permissions and limitations under the License.
 
 
-## Note for manual install/testing:
+## Manual installation (without packages)
 
-This barclamp does not ship with the openstack tarballs, because they are handled in the rpm package.
-In order to use this barclamp independent of the package, please run the following commands that will download the required files:
+The git repository does not ship the OpenStack tarballs used in the hyperv cookbook, nor the zip archive containing all
+their dependencies (to avoid bloating the size of the repository). These files are usually provided by a vendor, as part
+of a package.
 
-`wget http://tarballs.openstack.org/nova/nova-12.0.0.tar.gz /opt/dell/chef/cookbooks/hyperv/files/default/
-wget http://tarballs.openstack.org/neutron/neutron-7.0.0.tar.gz /opt/dell/chef/cookbooks/hyperv/files/default/
-wget http://tarballs.openstack.org/networking-hyperv/networking-hyperv-stable-liberty.tar.gz /opt/dell/chef/cookbooks/hyperv/files/default/
-wget http://tarballs.openstack.org/ceilometer/ceilometer-5.0.0.tar.gz /opt/dell/chef/cookbooks/hyperv/files/default/`
+In case of manual installation from git, you can download the files manually. For instance:
+
+```
+wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/nova/nova-12.0.0.tar.gz
+wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/neutron/neutron-7.0.0.tar.gz
+wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/networking-hyperv/networking-hyperv-stable-liberty.tar.gz
+wget -P /opt/dell/chef/cookbooks/hyperv/files/default/ http://tarballs.openstack.org/ceilometer/ceilometer-5.0.0.tar.gz
+```
+
+Note that the versions are the ones used in the hyperv cookbook at the time of writing.
+
+The zip archive has no hosting yet. Please get in touch with us to get it.
