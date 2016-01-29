@@ -17,9 +17,7 @@ end
 windows_batch "unzip #{component}" do
   code <<-EOH
   rmdir /S /Q #{node[:openstack][:location]}\\#{component}
-  #{node[:sevenzip][:command]} x #{cached_file} -o#{node[:openstack][:location]} -r -y
-  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{component}-#{node[:openstack][:tarball_branch]}.tar -o#{node[:openstack][:location]} -r -y
-  rmdir /S /Q #{node[:openstack][:location]}\\dist
+  #{node[:sevenzip][:command]} x #{cached_file} -so -y | #{node[:sevenzip][:command]} x -ttar -si -y -o#{node[:openstack][:location]}
   ren #{node[:openstack][:location]}\\#{component}-* #{component}
   EOH
 end
