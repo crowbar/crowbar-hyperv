@@ -36,7 +36,7 @@ end
 
 utils_line "ensure correct python path in shebang in #{component}" do
   file "#{node[:python][:scripts]}\\#{service}-script.py"
-  regexp /\A#!.*/
+  regexp (/\A#!.*/)
   replace "#! #{node[:python][:command]}"
   action :replace
 end
