@@ -41,17 +41,17 @@ default[:sevenzip][:command] = "\"C:\\Program Files\\7-Zip\\7z.exe\""
 default[:cache_location] = "#{Chef::Config[:file_cache_path]}/"
 
 default[:python][:file] = "python-2.7.5.msi"
-default[:python][:command] = 'C:\Python27\python.exe'
-default[:python][:sitepackages] = 'C:\Python27\lib\site-packages'
-default[:python][:path] = 'C:\Python27'
-default[:python][:scripts] = 'C:\Python27\Scripts'
+default[:python][:command] = "C:\\Python27\\python.exe"
+default[:python][:sitepackages] = "C:\\Python27\\lib\\site-packages"
+default[:python][:path] = "C:\\Python27"
+default[:python][:scripts] = "C:\\Python27\\Scripts"
 
 default[:python][:archive] = "python275.zip"
 default[:python][:pywin32register] = "pywin32_postinstall.py"
 default[:python][:installed] = "#{node[:python][:scripts]}\\#{node[:python][:pywin32register]}"
 
-default[:openstack][:location] = 'C:\OpenStack'
-default[:openstack][:tarball_branch] = 'stable-liberty'
+default[:openstack][:location] = "C:\\OpenStack"
+default[:openstack][:tarball_branch] = "stable-liberty"
 
 default[:openstack][:nova][:name] = "nova"
 
