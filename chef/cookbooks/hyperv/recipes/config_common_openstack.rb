@@ -1,7 +1,13 @@
 raise unless node[:platform_family] == "windows"
 
 # Create common directories
-dirs = [node[:openstack][:instances], node[:openstack][:config], node[:openstack][:bin], node[:openstack][:log]]
+dirs = [
+  node[:openstack][:src],
+  node[:openstack][:instances],
+  node[:openstack][:config],
+  node[:openstack][:bin],
+  node[:openstack][:log]
+]
 dirs.each do |dir|
   directory dir do
     action :create

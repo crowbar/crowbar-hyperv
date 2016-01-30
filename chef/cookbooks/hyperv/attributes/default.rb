@@ -63,6 +63,7 @@ default[:openstack][:ceilometer][:name] = "ceilometer"
 default[:openstack][:ceilometer][:lock_path] = "C:\\OpenStack\\var\\run\\"
 default[:openstack][:ceilometer][:signing_dir] = "C:\\OpenStack\\var\\cache\\ceilometer\\keystone-signing\\"
 
+default[:openstack][:src] = "C:\\OpenStack\\src"
 default[:openstack][:instances] = "C:\\OpenStack\\Instances"
 default[:openstack][:config] = "C:\\OpenStack\\etc"
 default[:openstack][:bin] = "C:\\OpenStack\\bin"

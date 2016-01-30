@@ -3,7 +3,7 @@ raise unless node[:platform_family] == "windows"
 component = node[:openstack][:nova][:name]
 service = node[:service][:nova][:name]
 
-installed_file = "#{node[:openstack][:location]}\\installed-#{component}"
+installed_file = "#{node[:openstack][:src]}\\installed-#{component}"
 if File.exist? installed_file
   Chef::Log.info("#{component} files already installed")
   return
@@ -18,15 +18,15 @@ end
 # for loop is just a hack to make it possible to rename a file with a wildcard
 windows_batch "unzip #{component}" do
   code <<-EOH
-  rmdir /S /Q #{node[:openstack][:location]}\\#{component}
-  #{node[:sevenzip][:command]} x #{cached_file} -so -y | #{node[:sevenzip][:command]} x -ttar -si -y -o#{node[:openstack][:location]}
-  for /D %%f in (#{node[:openstack][:location]}\\#{component}-*) do ren "%%f" #{component}
+  rmdir /S /Q #{node[:openstack][:src]}\\#{component}
+  #{node[:sevenzip][:command]} x #{cached_file} -so -y | #{node[:sevenzip][:command]} x -ttar -si -y -o#{node[:openstack][:src]}
+  for /D %%f in (#{node[:openstack][:src]}\\#{component}-*) do ren "%%f" #{component}
   EOH
 end
 
 powershell "install #{component}" do
   code <<-EOH
-  cd #{node[:openstack][:location]}
+  cd #{node[:openstack][:src]}
   cd #{component}
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
