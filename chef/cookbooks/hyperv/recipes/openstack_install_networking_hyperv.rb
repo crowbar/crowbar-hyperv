@@ -14,11 +14,12 @@ cookbook_file cached_file do
   source tarball
 end
 
+# for loop is just a hack to make it possible to rename a file with a wildcard
 windows_batch "unzip #{component}" do
   code <<-EOH
   rmdir /S /Q #{node[:openstack][:location]}\\#{component}
   #{node[:sevenzip][:command]} x #{cached_file} -so -y | #{node[:sevenzip][:command]} x -ttar -si -y -o#{node[:openstack][:location]}
-  ren #{node[:openstack][:location]}\\#{component}-* #{component}
+  for /D %%f in (#{node[:openstack][:location]}\\#{component}-*) do ren "%%f" #{component}
   EOH
 end
 
