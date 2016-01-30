@@ -4,7 +4,7 @@ powershell "register_services" do
   code <<-EOH
     if (-not (Get-Service "#{node[:service][:ceilometer][:name]}" -ErrorAction SilentlyContinue))
     {
-      New-Service -name "#{node[:service][:ceilometer][:name]}" -binaryPathName "`"#{node[:openstack][:bin]}\\#{node[:service][:file]}`" ceilometer-compute-agent `"#{node[:openstack][:ceilometer][:installed]}`" --config-file `"#{node[:openstack][:config]}\\ceilometer.conf`"" -displayName "#{node[:service][:ceilometer][:displayname]}" -description "#{node[:service][:ceilometer][:description]}" -startupType Automatic
+      New-Service -name "#{node[:service][:ceilometer][:name]}" -binaryPathName "`"#{node[:openstack][:bin]}\\#{node[:service][:file]}`" ceilometer-compute-agent `"#{node[:openstack][:ceilometer][:binary]}`" --config-file `"#{node[:openstack][:config]}\\ceilometer.conf`"" -displayName "#{node[:service][:ceilometer][:displayname]}" -description "#{node[:service][:ceilometer][:description]}" -startupType Automatic
       Start-Service "#{node[:service][:ceilometer][:name]}"
       Set-Service -Name "#{node[:service][:ceilometer][:name]}" -StartupType Automatic
     }

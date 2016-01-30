@@ -54,12 +54,15 @@ default[:openstack][:location] = "C:\\OpenStack"
 default[:openstack][:tarball_branch] = "stable-liberty"
 
 default[:openstack][:nova][:name] = "nova"
+default[:openstack][:nova][:binary] = "#{node[:python][:scripts]}\\nova-compute.exe"
 
 default[:openstack][:neutron][:name] = "neutron"
+default[:openstack][:neutron][:binary] = "#{node[:python][:scripts]}\\neutron-hyperv-agent.exe"
 
 default[:openstack][:networking_hyperv][:name] = "networking-hyperv"
 
 default[:openstack][:ceilometer][:name] = "ceilometer"
+default[:openstack][:ceilometer][:binary] = "#{node[:python][:scripts]}\\ceilometer-agent-compute.exe"
 default[:openstack][:ceilometer][:lock_path] = "C:\\OpenStack\\var\\run\\"
 default[:openstack][:ceilometer][:signing_dir] = "C:\\OpenStack\\var\\cache\\ceilometer\\keystone-signing\\"
 
