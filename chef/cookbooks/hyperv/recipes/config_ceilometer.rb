@@ -31,7 +31,7 @@ if node[:ceilometer][:use_mongodb]
     db_connection = "mongodb://#{mongodb_ip}:#{db_host[:ceilometer][:mongodb][:port]}/ceilometer"
   end
 else
-  db_settings = fetch_database_settings
+  db_settings = fetch_database_settings("ceilometer")
 
   include_recipe "database::client"
   include_recipe "#{db_settings[:backend_name]}::client"
