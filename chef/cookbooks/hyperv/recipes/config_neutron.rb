@@ -35,7 +35,6 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/neutron_hyperv_agent.conf
   source "neutron_hyperv_agent.conf.erb"
   variables(
             rabbit_settings: fetch_rabbitmq_settings("nova"),
-            openstack_location: node[:openstack][:location],
             openstack_log: node[:openstack][:log],
             neutron_networking_plugin: neutron_networking_plugin,
             neutron_ml2_type_drivers: neutron_ml2_type_drivers,

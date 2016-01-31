@@ -73,7 +73,6 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/nova.conf" do
             cinder_insecure: cinder_insecure,
             rabbit_settings: fetch_rabbitmq_settings("nova"),
             instances_path: node[:openstack][:instances],
-            openstack_location: node[:openstack][:location],
             openstack_config: node[:openstack][:config],
             openstack_bin: node[:openstack][:bin],
             openstack_log: node[:openstack][:log]
