@@ -52,10 +52,14 @@ Chef::Log.info("Neutron server at #{neutron_server_host}")
   end
 end
 
+directory node[:openstack][:nova][:config] do
+  action :create
+end
+
 # Chef 11.4 fails to notify if the path separator is windows like,
 # according to https://tickets.opscode.com/browse/CHEF-4082 using gsub
 # to replace the windows path separator to linux one
-template "#{node[:openstack][:config].gsub(/\\/, "/")}/nova.conf" do
+template "#{node[:openstack][:nova][:config].gsub(/\\/, "/")}/nova.conf" do
   source "nova.conf.erb"
   variables(
             glance_server_protocol: glance_server_protocol,
@@ -74,6 +78,7 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/nova.conf" do
             rabbit_settings: fetch_rabbitmq_settings("nova"),
             instances_path: node[:openstack][:instances],
             openstack_config: node[:openstack][:config],
+            nova_config: node[:openstack][:nova][:config],
             openstack_bin: node[:openstack][:bin],
             openstack_log: node[:openstack][:log]
            )
