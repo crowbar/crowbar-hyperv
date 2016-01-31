@@ -29,6 +29,11 @@ logdir=<%= @openstack_log %>\
 logfile=nova-compute.log
 network_api_class=nova.network.neutronv2.api.API
 
+# ceilometer-related settings
+instance_usage_audit = True
+instance_usage_audit_period = hour
+notify_on_state_change = vm_and_task_state
+
 [neutron]
 url=<%= @neutron_protocol %>://<%= @neutron_server_host %>:<%= @neutron_server_port %>
 admin_tenant_name=<%= @keystone_settings['service_tenant'] %>
@@ -52,3 +57,4 @@ vswitch_name=vswitch
 limit_cpu_features=false
 config_drive_inject_password=false
 qemu_img_cmd=<%= @openstack_bin %>\qemu-img.exe
+enable_instance_metrics_collection = true
