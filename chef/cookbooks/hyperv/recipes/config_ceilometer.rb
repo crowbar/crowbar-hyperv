@@ -11,7 +11,7 @@ if metering_time_to_live > 0
   metering_time_to_live = metering_time_to_live * 3600 * 24
 end
 
-is_compute_agent = %w(ceilometer-agent-hyperv nova-multi-compute-hyperv).all?{ |role| node.roles.include?(role) }
+is_compute_agent = %w(ceilometer-agent-hyperv nova-compute-hyperv).all?{ |role| node.roles.include?(role) }
 
 dirs = [node[:openstack][:ceilometer][:lock_path], node[:openstack][:ceilometer][:signing_dir]]
 dirs.each do |dir|
