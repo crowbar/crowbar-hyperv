@@ -45,7 +45,7 @@ template "#{node[:openstack][:ceilometer][:config].gsub(/\\/, "/")}/ceilometer.c
       lock_path: node[:openstack][:ceilometer][:lock_path],
       log_dir: node[:openstack][:log],
       signing_dir: node[:openstack][:ceilometer][:signing_dir],
-      pipeline_yaml: "#{node[:openstack][:ceilometer][:config]}\\pipeline.yaml"
+      ceilometer_config: node[:openstack][:ceilometer][:config]
     )
     if is_compute_agent
       notifies :restart, "service[nova-compute]"

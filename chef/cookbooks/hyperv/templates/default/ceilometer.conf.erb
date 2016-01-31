@@ -211,7 +211,7 @@ nova_http_log_debug=<%= @debug ? "true" : "false" %>
 
 # Configuration file for pipeline definition. (string value)
 #pipeline_cfg_file=pipeline.yaml
-pipeline_cfg_file=<%= @pipeline_yaml %>
+pipeline_cfg_file=<%= @ceilometer_config %>\pipeline.yaml
 
 
 #
@@ -504,6 +504,7 @@ log_dir=<%= @log_dir %>
 
 # The JSON file that defines policies. (string value)
 #policy_file=policy.json
+policy_file=<%= @ceilometer_config %>\policy.json
 
 # Default rule. Enforced when a requested rule is not found.
 # (string value)
