@@ -47,10 +47,10 @@ else
   db_connection = "#{db_settings[:url_scheme]}://#{node[:ceilometer][:db][:user]}:#{db_password}@#{db_settings[:address]}/#{node[:ceilometer][:db][:database]}"
 end
 
-time_to_live = node[:ceilometer][:database][:time_to_live]
-if time_to_live > 0
+metering_time_to_live = node[:ceilometer][:database][:metering_time_to_live]
+if metering_time_to_live > 0
   # We store the value of time to live in days, but config file expects seconds
-  time_to_live = time_to_live * 3600 * 24
+  metering_time_to_live = metering_time_to_live * 3600 * 24
 end
 
 is_compute_agent = %w(ceilometer-agent-hyperv nova-multi-compute-hyperv).all?{ |role| node.roles.include?(role) }
@@ -77,7 +77,7 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/ceilometer.conf" do
       node_hostname: node["hostname"],
       hypervisor_inspector: "hyperv",
       libvirt_type: "",
-      time_to_live: time_to_live,
+      time_to_live: metering_time_to_live,
       alarm_threshold_evaluation_interval: node[:ceilometer][:alarm_threshold_evaluation_interval],
       lock_path: node[:openstack][:ceilometer][:lock_path],
       log_dir: node[:openstack][:log],
