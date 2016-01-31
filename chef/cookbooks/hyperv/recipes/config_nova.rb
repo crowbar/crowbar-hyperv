@@ -52,10 +52,6 @@ Chef::Log.info("Neutron server at #{neutron_server_host}")
   end
 end
 
-directory node[:openstack][:nova][:config] do
-  action :create
-end
-
 # Chef 11.4 fails to notify if the path separator is windows like,
 # according to https://tickets.opscode.com/browse/CHEF-4082 using gsub
 # to replace the windows path separator to linux one

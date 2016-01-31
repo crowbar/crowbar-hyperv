@@ -1,6 +1,8 @@
 raise unless node[:platform_family] == "windows"
 
 component = node[:openstack][:nova][:name]
+config_dir = node[:openstack][:nova][:config]
+tarball_policy_json = "etc\\nova\\policy.json"
 service = node[:service][:nova][:name]
 
 installed_file = "#{node[:openstack][:src]}\\installed-#{component}"
@@ -15,12 +17,17 @@ cookbook_file cached_file do
   source tarball
 end
 
+directory config_dir do
+  action :create
+end
+
 # for loop is just a hack to make it possible to rename a file with a wildcard
 windows_batch "unzip #{component}" do
   code <<-EOH
   rmdir /S /Q #{node[:openstack][:src]}\\#{component}
   #{node[:sevenzip][:command]} x #{cached_file} -so -y | #{node[:sevenzip][:command]} x -ttar -si -y -o#{node[:openstack][:src]}
   for /D %%f in (#{node[:openstack][:src]}\\#{component}-*) do ren "%%f" #{component}
+  cp #{node[:openstack][:src]}\\#{component}\\#{tarball_policy_json} #{config_dir}
   EOH
 end
 

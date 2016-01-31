@@ -28,10 +28,6 @@ vlan_start = node[:network][:networks][:nova_fixed][:vlan]
 num_vlans = neutron_server[:neutron][:num_vlans]
 vlan_end = [vlan_start + num_vlans - 1, 4094].min
 
-directory node[:openstack][:neutron][:config] do
-  action :create
-end
-
 # Chef 11.4 fails to notify if the path separator is windows like,
 # according to https://tickets.opscode.com/browse/CHEF-4082 using gsub
 # to replace the windows path separator to linux one
