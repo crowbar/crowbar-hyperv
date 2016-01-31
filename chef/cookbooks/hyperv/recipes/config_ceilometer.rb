@@ -5,48 +5,6 @@ keystone_settings = KeystoneHelper.keystone_settings(node, :ceilometer)
 bind_host = node[:ceilometer][:api][:host]
 bind_port = node[:ceilometer][:api][:port]
 
-if node[:ceilometer][:use_mongodb]
-  db_connection = nil
-
-  if node[:ceilometer][:ha][:server][:enabled]
-    db_hosts = search(:node,
-                      "ceilometer_ha_mongodb_replica_set_member:true AND roles:ceilometer-server AND "\
-                      "ceilometer_config_environment:#{node[:ceilometer][:config][:environment]}"
-      )
-    unless db_hosts.empty?
-      ## This will fail on windows, we need to find something better here
-      mongodb_servers = db_hosts.map { |s| "#{Chef::Recipe::Barclamp::Inventory.get_network_by_type(s, "admin").address}:#{s[:ceilometer][:mongodb][:port]}" }
-      db_connection = "mongodb://#{mongodb_servers.sort.join(',')}/ceilometer?replicaSet=#{node[:ceilometer][:ha][:mongodb][:replica_set][:name]}"
-    end
-  end
-
-  # if this is a cluster, but the replica set member attribute hasn't
-  # been set on any node (yet), we just fallback to using the first
-  # ceilometer-server node
-  if db_connection.nil?
-    db_hosts = search(:node, "roles:ceilometer-server")
-    db_host = db_hosts.first || node
-    ## This will fail on windows
-    mongodb_ip = Chef::Recipe::Barclamp::Inventory.get_network_by_type(db_host, "admin").address
-    db_connection = "mongodb://#{mongodb_ip}:#{db_host[:ceilometer][:mongodb][:port]}/ceilometer"
-  end
-else
-  db_settings = fetch_database_settings("ceilometer")
-
-  include_recipe "database::client"
-  include_recipe "#{db_settings[:backend_name]}::client"
-  include_recipe "#{db_settings[:backend_name]}::python-client"
-
-  db_password = ""
-  # pickup password to database from ceilometer-server node
-  node_controllers = search(:node, "roles:ceilometer-server") || []
-  if node_controllers.length > 0
-    db_password = node_controllers[0][:ceilometer][:db][:password]
-  end
-
-  db_connection = "#{db_settings[:url_scheme]}://#{node[:ceilometer][:db][:user]}:#{db_password}@#{db_settings[:address]}/#{node[:ceilometer][:db][:database]}"
-end
-
 metering_time_to_live = node[:ceilometer][:database][:metering_time_to_live]
 if metering_time_to_live > 0
   # We store the value of time to live in days, but config file expects seconds
@@ -73,7 +31,8 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/ceilometer.conf" do
       bind_host: bind_host,
       bind_port: bind_port,
       metering_secret: node[:ceilometer][:metering_secret],
-      database_connection: db_connection,
+      # compute agents don't need direct access to the database
+      database_connection: "",
       node_hostname: node["hostname"],
       hypervisor_inspector: "hyperv",
       libvirt_type: "",
