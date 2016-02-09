@@ -1,8 +1,8 @@
-raise if not node[:platform_family] == "windows"
+raise unless node[:platform_family] == "windows"
 
 cookbook_file "#{node[:cache_location]}#{node[:openstack][:ceilometer][:file]}" do
   source node[:openstack][:ceilometer][:file]
-  not_if { ::File.exists?(node[:openstack][:ceilometer][:installed]) }
+  not_if { ::File.exist?(node[:openstack][:ceilometer][:installed]) }
 end
 
 windows_batch "unzip_ceilometer" do
@@ -12,7 +12,7 @@ windows_batch "unzip_ceilometer" do
   rmdir /S /Q #{node[:openstack][:location]}\\dist
   ren #{node[:openstack][:location]}\\#{node[:openstack][:ceilometer][:name]}-#{node[:openstack][:ceilometer][:version]} #{node[:openstack][:ceilometer][:name]}
   EOH
-  not_if { ::File.exists?("#{node[:openstack][:location]}\\#{node[:openstack][:ceilometer][:name]}") }
+  not_if { ::File.exist?("#{node[:openstack][:location]}\\#{node[:openstack][:ceilometer][:name]}") }
 end
 
 powershell "install_ceilometer" do
@@ -22,5 +22,5 @@ powershell "install_ceilometer" do
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
   EOH
-  not_if { ::File.exists?("#{node[:openstack][:ceilometer][:installed]}") }
+  not_if { ::File.exist?(node[:openstack][:ceilometer][:installed]) }
 end
