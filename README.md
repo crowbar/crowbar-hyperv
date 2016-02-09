@@ -28,3 +28,14 @@ To get in contact with the developers you have multiple options, all of them are
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
 an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
+
+
+## Note for manual install/testing:
+
+This barclamp does not ship with the openstack tarballs, because they are handled in the rpm package.
+In order to use this barclamp independent of the package, please run the following commands that will download the required files:
+
+`wget http://tarballs.openstack.org/nova/nova-12.0.0.tar.gz /opt/dell/chef/cookbooks/hyperv/files/default/
+wget http://tarballs.openstack.org/neutron/neutron-7.0.0.tar.gz /opt/dell/chef/cookbooks/hyperv/files/default/
+wget http://tarballs.openstack.org/networking-hyperv/networking-hyperv-stable-liberty.tar.gz /opt/dell/chef/cookbooks/hyperv/files/default/
+wget http://tarballs.openstack.org/ceilometer/ceilometer-5.0.0.tar.gz /opt/dell/chef/cookbooks/hyperv/files/default/`
