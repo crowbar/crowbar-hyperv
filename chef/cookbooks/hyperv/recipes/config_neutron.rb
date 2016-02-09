@@ -31,11 +31,11 @@ vlan_end = [vlan_start + num_vlans - 1, 4094].min
 # Chef 11.4 fails to notify if the path separator is windows like,
 # according to https://tickets.opscode.com/browse/CHEF-4082 using gsub
 # to replace the windows path separator to linux one
-template "#{node[:openstack][:config].gsub(/\\/, "/")}/neutron_hyperv_agent.conf" do
+template "#{node[:openstack][:neutron][:config].gsub(/\\/, "/")}/neutron_hyperv_agent.conf" do
   source "neutron_hyperv_agent.conf.erb"
   variables(
             rabbit_settings: fetch_rabbitmq_settings("nova"),
-            openstack_location: node[:openstack][:location],
+            neutron_config: node[:openstack][:neutron][:config],
             openstack_log: node[:openstack][:log],
             neutron_networking_plugin: neutron_networking_plugin,
             neutron_ml2_type_drivers: neutron_ml2_type_drivers,

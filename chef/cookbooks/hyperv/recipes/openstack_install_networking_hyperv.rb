@@ -1,26 +1,37 @@
 raise unless node[:platform_family] == "windows"
 
-cookbook_file "#{node[:cache_location]}#{node[:openstack][:networking_hyperv][:file]}" do
-  source node[:openstack][:networking_hyperv][:file]
-  not_if { ::File.exist?(node[:openstack][:networking_hyperv][:file]) }
+component = node[:openstack][:networking_hyperv][:name]
+
+installed_file = "#{node[:openstack][:src]}\\installed-#{component}"
+if File.exist? installed_file
+  Chef::Log.info("#{component} files already installed")
+  return
 end
 
-windows_batch "unzip_networking-hyperv" do
+tarball = "#{component}-#{node[:openstack][:tarball_branch]}.tar.gz"
+cached_file = "#{node[:cache_location]}#{tarball}"
+cookbook_file cached_file do
+  source tarball
+end
+
+# for loop is just a hack to make it possible to rename a file with a wildcard
+windows_batch "unzip #{component}" do
   code <<-EOH
-  #{node[:sevenzip][:command]} x #{node[:cache_location]}#{node[:openstack][:networking_hyperv][:file]} -o#{node[:openstack][:location]} -r -y
-  #{node[:sevenzip][:command]} x #{node[:openstack][:location]}\\dist\\#{node[:openstack][:networking_hyperv][:name]}-#{node[:openstack][:networking_hyperv][:version]}.tar -o#{node[:openstack][:location]} -r -y
-  rmdir /S /Q #{node[:openstack][:location]}\\dist
-  ren #{node[:openstack][:location]}\\#{node[:openstack][:networking_hyperv][:name]}-#{node[:openstack][:networking_hyperv][:version]} #{node[:openstack][:networking_hyperv][:name]}
+  rmdir /S /Q #{node[:openstack][:src]}\\#{component}
+  #{node[:sevenzip][:command]} x #{cached_file} -so -y | #{node[:sevenzip][:command]} x -ttar -si -y -o#{node[:openstack][:src]}
+  for /D %%f in (#{node[:openstack][:src]}\\#{component}-*) do ren "%%f" #{component}
   EOH
-  not_if { ::File.exist?("#{node[:openstack][:location]}\\#{node[:openstack][:networking_hyperv][:name]}") }
 end
 
-powershell "install_networking_hyperv" do
+powershell "install #{component}" do
   code <<-EOH
-  cd #{node[:openstack][:location]}
-  cd #{node[:openstack][:networking_hyperv][:name]}
+  cd #{node[:openstack][:src]}
+  cd #{component}
   $env:PBR_VERSION=Get-Content setup.cfg | Select-String -Pattern "version = " | %{$_ -replace "version = ", ""}
   #{node[:python][:command]} setup.py install
   EOH
-  not_if { ::File.exist?("#{node[:openstack][:networking_hyperv][:installed]}") }
+end
+
+file installed_file do
+  action :create
 end

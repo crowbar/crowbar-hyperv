@@ -41,46 +41,39 @@ default[:sevenzip][:command] = "\"C:\\Program Files\\7-Zip\\7z.exe\""
 default[:cache_location] = "#{Chef::Config[:file_cache_path]}/"
 
 default[:python][:file] = "python-2.7.5.msi"
-default[:python][:command] = 'C:\Python27\python.exe'
-default[:python][:sitepackages] = 'C:\Python27\lib\site-packages'
-default[:python][:path] = 'C:\Python27'
-default[:python][:scripts] = 'C:\Python27\Scripts'
+default[:python][:command] = "C:\\Python27\\python.exe"
+default[:python][:sitepackages] = "C:\\Python27\\lib\\site-packages"
+default[:python][:path] = "C:\\Python27"
+default[:python][:scripts] = "C:\\Python27\\Scripts"
 
 default[:python][:archive] = "python275.zip"
 default[:python][:pywin32register] = "pywin32_postinstall.py"
 default[:python][:installed] = "#{node[:python][:scripts]}\\#{node[:python][:pywin32register]}"
 
-default[:openstack][:location] = 'C:\OpenStack'
+default[:openstack][:location] = "C:\\OpenStack"
+default[:openstack][:src] = "#{node[:openstack][:location]}\\src"
+default[:openstack][:instances] = "#{node[:openstack][:location]}\\Instances"
+default[:openstack][:config] = "#{node[:openstack][:location]}\\etc"
+default[:openstack][:bin] = "#{node[:openstack][:location]}\\bin"
+default[:openstack][:log] = "#{node[:openstack][:location]}\\log"
+
+default[:openstack][:tarball_branch] = "stable-liberty"
 
 default[:openstack][:nova][:name] = "nova"
-default[:openstack][:nova][:version] = "12.0.0"
-default[:openstack][:nova][:file] = "nova-12.0.0.tar.gz"
-default[:openstack][:nova][:target] = "#{node[:openstack][:location]}"
-default[:openstack][:nova][:installed] = "#{node[:python][:scripts]}\\nova-compute.exe"
+default[:openstack][:nova][:binary] = "#{node[:python][:scripts]}\\nova-compute.exe"
+default[:openstack][:nova][:config] = "#{node[:openstack][:config]}\\nova"
 
 default[:openstack][:neutron][:name] = "neutron"
-default[:openstack][:neutron][:version] = "7.0.0"
-default[:openstack][:neutron][:file] = "neutron-7.0.0.tar.gz"
-default[:openstack][:neutron][:target] = "#{node[:openstack][:location]}"
-default[:openstack][:neutron][:installed] = "#{node[:python][:scripts]}\\neutron-hyperv-agent.exe"
+default[:openstack][:neutron][:binary] = "#{node[:python][:scripts]}\\neutron-hyperv-agent.exe"
+default[:openstack][:neutron][:config] = "#{node[:openstack][:config]}\\neutron"
 
 default[:openstack][:networking_hyperv][:name] = "networking-hyperv"
-default[:openstack][:networking_hyperv][:version] = "2015.1.1.dev36"
-default[:openstack][:networking_hyperv][:file] = "networking-hyperv-stable-liberty.tar.gz"
-default[:openstack][:networking_hyperv][:target] = "#{node[:openstack][:location]}"
 
 default[:openstack][:ceilometer][:name] = "ceilometer"
-default[:openstack][:ceilometer][:version] = "5.0.0"
-default[:openstack][:ceilometer][:file] = "ceilometer-5.0.0.tar.gz"
-default[:openstack][:ceilometer][:target] = "#{node[:openstack][:location]}"
-default[:openstack][:ceilometer][:lock_path] = "C:\\OpenStack\\var\\run\\"
-default[:openstack][:ceilometer][:signing_dir] = "C:\\OpenStack\\var\\cache\\ceilometer\\keystone-signing\\"
-default[:openstack][:ceilometer][:installed] = "#{node[:python][:scripts]}\\ceilometer-agent-compute.exe"
-
-default[:openstack][:instances] = "C:\\OpenStack\\Instances"
-default[:openstack][:config] = "C:\\OpenStack\\etc"
-default[:openstack][:bin] = "C:\\OpenStack\\bin"
-default[:openstack][:log] = "C:\\OpenStack\\log"
+default[:openstack][:ceilometer][:binary] = "#{node[:python][:scripts]}\\ceilometer-agent-compute.exe"
+default[:openstack][:ceilometer][:config] = "#{node[:openstack][:config]}\\ceilometer"
+default[:openstack][:ceilometer][:lock_path] = "#{node[:openstack][:location]}\\var\\run\\"
+default[:openstack][:ceilometer][:signing_dir] = "#{node[:openstack][:location]}\\var\\cache\\ceilometer\\keystone-signing\\"
 
 default[:service][:file] = "OpenStackService.exe"
 default[:service][:nova][:name] = "nova-compute"
@@ -89,6 +82,6 @@ default[:service][:nova][:description] = "Service Wrapper for Openstack Nova Com
 default[:service][:neutron][:name] = "neutron-hyperv-agent"
 default[:service][:neutron][:displayname] = "OpenStack Neutron Hyper-V Agent Service"
 default[:service][:neutron][:description] = "Service Wrapper for Openstack Neutron Hyper-V Agent"
-default[:service][:ceilometer][:name] = "ceilometer-agent-notification"
-default[:service][:ceilometer][:displayname] = "OpenStack Ceilometer Agent Notification Service"
-default[:service][:ceilometer][:description] = "Service Wrapper for Openstack Ceilometer Agent Notification"
+default[:service][:ceilometer][:name] = "ceilometer-agent-compute"
+default[:service][:ceilometer][:displayname] = "OpenStack Ceilometer Agent Compute Service"
+default[:service][:ceilometer][:description] = "Service Wrapper for Openstack Ceilometer Agent Compute"

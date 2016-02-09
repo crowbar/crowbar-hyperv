@@ -13,7 +13,10 @@ end
 
 is_compute_agent = %w(ceilometer-agent-hyperv nova-compute-hyperv).all?{ |role| node.roles.include?(role) }
 
-dirs = [node[:openstack][:ceilometer][:lock_path], node[:openstack][:ceilometer][:signing_dir]]
+dirs = [
+  node[:openstack][:ceilometer][:lock_path],
+  node[:openstack][:ceilometer][:signing_dir]
+]
 dirs.each do |dir|
   directory dir do
     action :create
@@ -21,7 +24,7 @@ dirs.each do |dir|
   end
 end
 
-template "#{node[:openstack][:config].gsub(/\\/, "/")}/ceilometer.conf" do
+template "#{node[:openstack][:ceilometer][:config].gsub(/\\/, "/")}/ceilometer.conf" do
     source "ceilometer.conf.erb"
     variables(
       debug: node[:ceilometer][:debug],
@@ -40,7 +43,8 @@ template "#{node[:openstack][:config].gsub(/\\/, "/")}/ceilometer.conf" do
       alarm_threshold_evaluation_interval: node[:ceilometer][:alarm_threshold_evaluation_interval],
       lock_path: node[:openstack][:ceilometer][:lock_path],
       log_dir: node[:openstack][:log],
-      signing_dir: node[:openstack][:ceilometer][:signing_dir]
+      signing_dir: node[:openstack][:ceilometer][:signing_dir],
+      ceilometer_config: node[:openstack][:ceilometer][:config]
     )
     if is_compute_agent
       notifies :restart, "service[nova-compute]"
@@ -50,7 +54,7 @@ end
 # Chef 11.4 fails to notify if the path separator is windows like,
 # according to https://tickets.opscode.com/browse/CHEF-4082 using gsub
 # to replace the windows path separator to linux one
-template "#{node[:openstack][:config].gsub(/\\/, "/")}/pipeline.yaml" do
+template "#{node[:openstack][:ceilometer][:config].gsub(/\\/, "/")}/pipeline.yaml" do
   source "pipeline.yaml.erb"
   variables({
       meters_interval: node[:ceilometer][:meters_interval],
