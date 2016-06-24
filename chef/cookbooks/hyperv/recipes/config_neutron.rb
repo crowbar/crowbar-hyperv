@@ -24,7 +24,8 @@ else
 end
 Chef::Log.info("Neutron server at #{neutron_server_host}")
 
-vlan_start = node[:network][:networks][:nova_fixed][:vlan]
+fixed_net_def = Barclamp::Inventory.get_network_definition(node, "nova_fixed")
+vlan_start = fixed_net_def["vlan"]
 num_vlans = neutron_server[:neutron][:num_vlans]
 vlan_end = [vlan_start + num_vlans - 1, 4094].min
 
