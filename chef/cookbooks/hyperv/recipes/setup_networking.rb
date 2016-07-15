@@ -1,8 +1,10 @@
 raise unless node[:platform_family] == "windows"
 
+admin_net = Barclamp::Inventory.get_network_by_type(node, "admin")
+
 powershell "configure_networking" do
   code <<-EOH
-  Rename-NetAdapter -Name (Get-NetIPAddress -IPAddress "#{node[:crowbar][:network][:admin][:address]}").InterfaceAlias -NewName "Management"
+  Rename-NetAdapter -Name (Get-NetIPAddress -IPAddress "#{admin_net.address}").InterfaceAlias -NewName "Management"
   $VSwitchList = Get-VMSwitch
   $SwitchConfigured = $false
 
